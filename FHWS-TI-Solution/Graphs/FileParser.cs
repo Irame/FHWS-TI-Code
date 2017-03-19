@@ -56,9 +56,9 @@ namespace Graphs
             return result;
         }
 
-        public static UndirectedGraph<Vertex<TData>, UndirectedEdge<Vertex<TData>>> ParseFileToUndirectedGraph<TData>(string filePath, Func<string, TData> dataParser)
+        public static UndirectedGraph<TData> ParseFileToUndirectedGraph<TData>(string filePath, Func<string, TData> dataParser)
         {
-            return ParseFileToGraph<UndirectedGraph<Vertex<TData>, UndirectedEdge<Vertex<TData>>>, TData, UndirectedEdge<Vertex<TData>>> (filePath, dataParser, 
+            return ParseFileToGraph<UndirectedGraph<TData>, TData, IEdge<Vertex<TData>>> (filePath, dataParser, 
                 (edgeLine, vertexDict) =>
                 {
                     var edgeMatch = ParseEdgeLineRegex.Match(edgeLine);
@@ -88,15 +88,15 @@ namespace Graphs
                 });
         }
 
-        public static UndirectedGraph<Vertex<string>, UndirectedEdge<Vertex<string>>> ParseFileToUndirectedGraph(string filePath)
+        public static UndirectedGraph<string> ParseFileToUndirectedGraph(string filePath)
         {
             return ParseFileToUndirectedGraph(filePath, dataString => dataString);
         }
 
 
-        public static BidirectionalGraph<Vertex<TData>, Edge<Vertex<TData>>> ParseFileToBidirectionalGraph<TData>(string filePath, Func<string, TData> dataParser)
+        public static DirectedGraph<TData> ParseFileToBidirectionalGraph<TData>(string filePath, Func<string, TData> dataParser)
         {
-            return ParseFileToGraph<BidirectionalGraph<Vertex<TData>, Edge<Vertex<TData>>>, TData, Edge<Vertex<TData>>> (filePath, dataParser, 
+            return ParseFileToGraph<DirectedGraph<TData>, TData, IEdge<Vertex<TData>>> (filePath, dataParser, 
                 (edgeLine, vertexDict) =>
                 {
                     var edgeMatch = ParseEdgeLineRegex.Match(edgeLine);
@@ -107,16 +107,16 @@ namespace Graphs
                         if (edgeMatch.Groups["weight"].Success && double.TryParse(edgeMatch.Groups["weight"].Value, out double weight))
                         {
                             newEdge = new TaggedEdge<Vertex<TData>, double>(
-                                vertexDict[edgeMatch.Groups["from-name"].Value],
-                                vertexDict[edgeMatch.Groups["to-name"].Value],
+                                vertexDict[edgeMatch.Groups["from"].Value],
+                                vertexDict[edgeMatch.Groups["to"].Value],
                                 weight
                             );
                         }
                         else
                         {
                             newEdge = new Edge<Vertex<TData>>(
-                                vertexDict[edgeMatch.Groups["from-name"].Value],
-                                vertexDict[edgeMatch.Groups["to-name"].Value]
+                                vertexDict[edgeMatch.Groups["from"].Value],
+                                vertexDict[edgeMatch.Groups["to"].Value]
                             );
                         }
 
@@ -127,7 +127,7 @@ namespace Graphs
         }
 
 
-        public static BidirectionalGraph<Vertex<string>, Edge<Vertex<string>>> ParseFileToBidirectionalGraph(string filePath)
+        public static DirectedGraph<string> ParseFileToBidirectionalGraph(string filePath)
         {
             return ParseFileToBidirectionalGraph(filePath, dataString => dataString);
         }

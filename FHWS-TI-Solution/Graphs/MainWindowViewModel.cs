@@ -25,6 +25,8 @@ namespace Graphs
             get { return _filePath; }
         }
 
+        public GraphViewModel<string> GraphViewModel { get; }
+
         public MainWindowViewModel()
         {
             BrowseCommand = new RelayCommand(() =>
@@ -36,8 +38,11 @@ namespace Graphs
 
             ParseCommand = new RelayCommand<string>(filePath =>
             {
-                var graph = FileParser.ParseFileToUndirectedGraph(filePath);
+                var graph = FileParser.ParseFileToBidirectionalGraph(filePath);
+                GraphViewModel.UpdateGraph(graph);
             });
+
+            GraphViewModel = new GraphViewModel<string>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

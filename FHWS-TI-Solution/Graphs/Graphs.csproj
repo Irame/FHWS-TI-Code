@@ -79,9 +79,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileParser.cs" />
+    <Compile Include="GraphViewModel.cs" />
+    <Compile Include="GraphXClasses.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\RelayCommands.cs" />
-    <Compile Include="Vertex.cs" />
+    <Compile Include="Graph.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
