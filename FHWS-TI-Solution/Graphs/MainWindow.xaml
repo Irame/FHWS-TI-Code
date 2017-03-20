@@ -13,10 +13,11 @@
     <Grid>
         <DockPanel HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Top">
             <Label Content="Path to File:" DockPanel.Dock="Left"/>
+            <CheckBox Content="Directed" IsChecked="{Binding IsDirected}" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0,0,0"/>
             <Button Content="Parse" Width="75" Command="{Binding ParseCommand}" CommandParameter="{Binding ElementName=FilePathTextBox, Path=Text}" DockPanel.Dock="Right" Margin="10,0,0,0"/>
             <Button Content="Browse" Width="75" DockPanel.Dock="Right" Command="{Binding BrowseCommand}"/>
             <TextBox x:Name="FilePathTextBox" TextWrapping="NoWrap" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="0,0,10,0" Text="{Binding FilePath, Mode=TwoWay}" IsReadOnly="True"/>
         </DockPanel>
-        <graphxctrl:ZoomControl x:Name="GraphZoomControl" Margin="0,41,0,0" Content="{Binding GraphViewModel}"/>
+        <graphxctrl:ZoomControl x:Name="GraphZoomControl" Margin="0,41,0,0" Content="{Binding VisualGraphArea}"/>
     </Grid>
 </Window>

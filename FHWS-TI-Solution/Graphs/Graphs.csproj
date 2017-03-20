@@ -79,8 +79,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileParser.cs" />
-    <Compile Include="GraphViewModel.cs" />
-    <Compile Include="GraphXClasses.cs" />
+    <Compile Include="VisualGraphArea.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\RelayCommands.cs" />
     <Compile Include="Graph.cs" />

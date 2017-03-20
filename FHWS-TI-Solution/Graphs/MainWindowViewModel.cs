@@ -25,7 +25,9 @@ namespace Graphs
             get { return _filePath; }
         }
 
-        public GraphViewModel<string> GraphViewModel { get; }
+        public VisualGraphArea VisualGraphArea { get; }
+
+        public bool IsDirected { get; set; }
 
         public MainWindowViewModel()
         {
@@ -38,11 +40,11 @@ namespace Graphs
 
             ParseCommand = new RelayCommand<string>(filePath =>
             {
-                var graph = FileParser.ParseFileToBidirectionalGraph(filePath);
-                GraphViewModel.UpdateGraph(graph);
+                var graph = FileParser.ParseFileToGraph(filePath, IsDirected);
+                VisualGraphArea.UpdateGraph(graph);
             });
 
-            GraphViewModel = new GraphViewModel<string>();
+            VisualGraphArea = new VisualGraphArea();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
