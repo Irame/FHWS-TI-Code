@@ -34,7 +34,7 @@ namespace Graphs
             var vertexDict = newGraph.NameVertexDictionary.ToDictionary(kvp => kvp.Key, kvp => new VisualVertex(kvp.Value));
 
             graph.AddVertexRange(vertexDict.Values);
-            graph.AddEdgeRange(newGraph.EdgeList.Select(edge => new VisualEdge(edge, vertexDict)));
+            graph.AddEdgeRange(newGraph.Edges.Select(edge => new VisualEdge(edge, vertexDict)));
 
             ShowAllEdgesArrows(newGraph.IsDirected);
             ClearLayout();

@@ -42,6 +42,8 @@ namespace Graphs
             {
                 var graph = FileParser.ParseFileToGraph(filePath, IsDirected);
                 VisualGraphArea.UpdateGraph(graph);
+                Console.WriteLine($"HasEulerianPath: {graph.HasEulerianPath()}");
+                Console.WriteLine($"HasEulerianCircuit: {graph.HasEulerianCircuit()}");
             });
 
             VisualGraphArea = new VisualGraphArea();

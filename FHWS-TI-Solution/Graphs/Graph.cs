@@ -4,18 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Serialization;
+using Graphs.Utils;
 
 namespace Graphs
 {
-    class Graph<TVertex>
+    partial class Graph<TVertex>
         where TVertex: VertexBase
     {
         private Dictionary<string, TVertex> _nameVertexDictionary;
         private MultiValueDictionary<TVertex, EdgeBase<TVertex>> _vertexEdgeDictionary;
         private List<EdgeBase<TVertex>> _edgeList;
 
-        public IReadOnlyCollection<EdgeBase<TVertex>> EdgeList => _edgeList;
+        public IEnumerable<TVertex> Vertices => NameVertexDictionary.Values;
+        public IReadOnlyCollection<EdgeBase<TVertex>> Edges => _edgeList;
         public IReadOnlyDictionary<string, TVertex> NameVertexDictionary => _nameVertexDictionary;
         public ILookup<TVertex, EdgeBase<TVertex>> VertexEdgeLookup => _vertexEdgeDictionary.AsLookup();
 
@@ -97,6 +100,62 @@ namespace Graphs
             _vertexEdgeDictionary.Remove(edge.Source, edge);
             _vertexEdgeDictionary.Remove(edge.Target, edge);
             _edgeList.Remove(edge);
+        }
+
+        public IEnumerable<(TVertex vertex, EdgeBase<TVertex> edge)> GetNeighborsWithEdges(TVertex vertex, bool ignoreSelfLoops = false)
+        {
+            foreach (var edge in _vertexEdgeDictionary[vertex])
+            {
+                if (edge.Source != vertex)
+                {
+                    if (IsDirected)
+                        continue;
+                    yield return (edge.Source, edge);
+                }
+                else if (edge.Target != vertex)
+                    yield return (edge.Target, edge);
+                else if (!ignoreSelfLoops)
+                    yield return (vertex, edge);
+            }
+        }
+        public IEnumerable<TVertex> GetNeighbors(TVertex vertex, bool ignoreSelfLoops = false)
+        {
+            return GetNeighborsWithEdges(vertex, ignoreSelfLoops).Select(vertexEdgeTuple => vertexEdgeTuple.vertex);
+        }
+
+        public int GetDegree(TVertex vertex)
+        {
+            return _vertexEdgeDictionary[vertex].Sum(edge => edge.Source == edge.Target ? 2 : 1);
+        }
+
+        public int GetOutDegree(TVertex vertex)
+        {
+            return _vertexEdgeDictionary[vertex].Sum(edge => edge.Source == vertex ? 1 : 0);
+        }
+
+        public int GetInDegree(TVertex vertex)
+        {
+            return _vertexEdgeDictionary[vertex].Sum(edge => edge.Target == vertex ? 1 : 0);
+        }
+
+        public void BreadthFirstSearch(TVertex startVertex, Action<TVertex> visitorAction)
+        {
+            Queue<TVertex> queue = new Queue<TVertex>(new []{startVertex});
+            HashSet<TVertex> visited = new HashSet<TVertex>();
+            while (!queue.IsEmpty())
+            {
+                var curVertex = queue.Dequeue();
+                visitorAction(curVertex);
+                visited.Add(curVertex);
+                queue.EnqueueRange(GetNeighbors(curVertex).Distinct().Except(visited));
+            }
+        }
+
+        public bool IsConnected()
+        {
+            var allVertices = Vertices.ToHashSet();
+            BreadthFirstSearch(allVertices.First(), vertex => allVertices.Remove(vertex));
+            return allVertices.IsEmpty();
         }
     }
 
