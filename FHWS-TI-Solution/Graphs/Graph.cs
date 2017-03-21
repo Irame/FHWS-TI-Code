@@ -142,13 +142,14 @@ namespace Graphs
         public void BreadthFirstSearch(TVertex startVertex, Action<TVertex> visitorAction)
         {
             Queue<TVertex> queue = new Queue<TVertex>(new []{startVertex});
-            HashSet<TVertex> visited = new HashSet<TVertex>();
+            HashSet<TVertex> visited = new HashSet<TVertex>(queue);
             while (!queue.IsEmpty())
             {
                 var curVertex = queue.Dequeue();
                 visitorAction(curVertex);
-                visited.Add(curVertex);
-                queue.EnqueueRange(GetNeighbors(curVertex).Distinct().Except(visited));
+                var neighbors = GetNeighbors(curVertex).Distinct().Except(visited).ToArray();
+                queue.EnqueueRange(neighbors);
+                visited.AddRange(neighbors);
             }
         }
 

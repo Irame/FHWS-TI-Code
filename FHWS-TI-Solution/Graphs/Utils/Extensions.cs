@@ -38,6 +38,14 @@ namespace Graphs.Utils
             return new HashSet<T>(collection);
         }
 
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
+        {
+            foreach (var value in values)
+            {
+                collection.Add(value);
+            }
+        }
+
         public static bool IsEmpty(this ICollection collection)
         {
             return collection.Count == 0;
