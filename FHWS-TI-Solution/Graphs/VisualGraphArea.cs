@@ -22,7 +22,7 @@ namespace Graphs
         {
             LogicCore = new GXLogicCore<VisualVertex, VisualEdge, BidirectionalGraph<VisualVertex, VisualEdge>>
             {
-                //DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.Circular,
+                DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.BoundedFR,
                 DefaultLayoutAlgorithmParams = new BoundedFRLayoutParameters
                 {
                     Width = 400,
@@ -38,7 +38,7 @@ namespace Graphs
             
             SetVerticesDrag(true, true);
             ShowAllEdgesLabels();
-            AlignAllEdgesLabels();
+            //AlignAllEdgesLabels();
         }
 
         public void UpdateGraph(Graph<VertexBase> newGraph)
@@ -94,7 +94,14 @@ namespace Graphs
             {
                 base.OnApplyTemplate();
 
-                if (!ShowArrows)
+                var origEdgeLabel = GetTemplatePart("PART_edgeLabel") as IEdgeLabelControl;
+                origEdgeLabel?.Hide();
+            }
+
+            public override void UpdateEdge(bool updateLabel = true)
+            {
+                base.UpdateEdge(updateLabel);
+                if (!ShowArrows && LinePathObject != null)
                 {
                     // Hide arrow
                     EdgePointerForSource?.Hide();
@@ -109,7 +116,7 @@ namespace Graphs
                     });
 
                     LinePathObject.Data = linegeometry;
-                    
+
                 }
             }
         }
