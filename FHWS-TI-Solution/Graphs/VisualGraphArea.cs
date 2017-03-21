@@ -10,6 +10,7 @@ using GraphX;
 using GraphX.Controls;
 using GraphX.Controls.Models;
 using GraphX.PCL.Common.Enums;
+using GraphX.PCL.Logic.Algorithms.LayoutAlgorithms;
 using GraphX.PCL.Logic.Models;
 using QuickGraph;
 
@@ -19,13 +20,25 @@ namespace Graphs
     {
         public VisualGraphArea()
         {
-            LogicCore = new GXLogicCore
-                <VisualVertex, VisualEdge, BidirectionalGraph<VisualVertex, VisualEdge>>
+            LogicCore = new GXLogicCore<VisualVertex, VisualEdge, BidirectionalGraph<VisualVertex, VisualEdge>>
+            {
+                //DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.Circular,
+                DefaultLayoutAlgorithmParams = new BoundedFRLayoutParameters
                 {
-                    DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.KK
-                };
+                    Width = 400,
+                    Height = 400
+                },
+                EnableParallelEdges = true,
+                EdgeCurvingEnabled = true,
+                DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.SimpleER
+
+            };
             ControlFactory = new VisualGraphControlFactory(this);
             EdgeLabelFactory = new DefaultEdgelabelFactory();
+            
+            SetVerticesDrag(true, true);
+            ShowAllEdgesLabels();
+            AlignAllEdgesLabels();
         }
 
         public void UpdateGraph(Graph<VertexBase> newGraph)
@@ -39,6 +52,17 @@ namespace Graphs
             ShowAllEdgesArrows(newGraph.IsDirected);
             ClearLayout();
             GenerateGraph(graph);
+        }
+
+        public static readonly DependencyProperty GraphProperty = DependencyProperty.Register(
+            "Graph", typeof(Graph<VertexBase>), typeof(VisualGraphArea), 
+            new PropertyMetadata(default(Graph<VertexBase>), 
+                (sender, args) => (sender as VisualGraphArea)?.UpdateGraph(args.NewValue as Graph<VertexBase>)));
+
+        public Graph<VertexBase> Graph
+        {
+            get { return (Graph<VertexBase>) GetValue(GraphProperty); }
+            set { SetValue(GraphProperty, value); }
         }
 
         class VisualGraphControlFactory : GraphControlFactory
@@ -85,6 +109,7 @@ namespace Graphs
                     });
 
                     LinePathObject.Data = linegeometry;
+                    
                 }
             }
         }

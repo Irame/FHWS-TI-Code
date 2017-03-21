@@ -19,13 +19,19 @@ namespace Graphs
         public RelayCommand<string> ParseCommand { get; }
 
         private string _filePath;
+        private Graph<VertexBase> _graph;
+
         public string FilePath
         {
             set { _filePath = value; OnPropertyChanged(); }
             get { return _filePath; }
         }
 
-        public VisualGraphArea VisualGraphArea { get; }
+        public Graph<VertexBase> Graph
+        {
+            get { return _graph; }
+            private set { _graph = value; OnPropertyChanged();}
+        }
 
         public bool IsDirected { get; set; }
 
@@ -40,13 +46,11 @@ namespace Graphs
 
             ParseCommand = new RelayCommand<string>(filePath =>
             {
-                var graph = FileParser.ParseFileToGraph(filePath, IsDirected);
-                VisualGraphArea.UpdateGraph(graph);
-                Console.WriteLine($"HasEulerianPath: {graph.HasEulerianPath()}");
-                Console.WriteLine($"HasEulerianCircuit: {graph.HasEulerianCircuit()}");
+                Graph = FileParser.ParseFileToGraph(filePath, IsDirected);
+                
+                Console.WriteLine($"HasEulerianPath: {Graph.HasEulerianPath()}");
+                Console.WriteLine($"HasEulerianCircuit: {Graph.HasEulerianCircuit()}");
             });
-
-            VisualGraphArea = new VisualGraphArea();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
