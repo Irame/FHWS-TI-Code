@@ -84,6 +84,7 @@
     <Compile Include="FileParser.cs" />
     <Compile Include="Sheet01\EulerianChecks.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\PropertyChangedBase.cs" />
     <Compile Include="VisualGraphArea.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\RelayCommands.cs" />

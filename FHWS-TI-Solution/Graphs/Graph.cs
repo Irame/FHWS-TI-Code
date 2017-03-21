@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml.Serialization;
 using Graphs.Utils;
 
@@ -159,11 +160,25 @@ namespace Graphs
         }
     }
 
-    class VertexBase
+    class VertexBase : PropertyChangedBase
     {
         public string Name { get; set; }
-
         public string Data { get; set; }
+
+        public Brush ForegroundBrush
+        {
+            get { return _foregroundBrush; }
+            set { _foregroundBrush = value; OnNotifyPropertyChanged(); }
+        }
+
+        public Brush BackgroundBrush
+        {
+            get { return _backgroundBrush; }
+            set { _backgroundBrush = value; OnNotifyPropertyChanged(); }
+        }
+
+        private Brush _foregroundBrush = Brushes.Black;
+        private Brush _backgroundBrush = Brushes.LightGray;
 
         public override string ToString()
         {
@@ -171,12 +186,20 @@ namespace Graphs
         }
     }
 
-    class EdgeBase<TVertex>
+    class EdgeBase<TVertex> : PropertyChangedBase
         where TVertex: VertexBase
     {
         public TVertex Source { get; }
         public TVertex Target { get; }
         public double? Weight { get; set; }
+
+        public Brush StrokeBrush
+        {
+            get { return _strokeBrush; }
+            set { _strokeBrush = value; OnNotifyPropertyChanged(); }
+        }
+
+        private Brush _strokeBrush = Brushes.Black;
 
         public EdgeBase(TVertex source, TVertex target, double? weight = null)
         {

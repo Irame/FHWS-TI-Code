@@ -12,7 +12,7 @@ using Microsoft.Win32;
 
 namespace Graphs
 {
-    class MainWindowViewModel : INotifyPropertyChanged
+    class MainWindowViewModel : PropertyChangedBase
     {
         public RelayCommand BrowseCommand { get; }
 
@@ -23,14 +23,14 @@ namespace Graphs
 
         public string FilePath
         {
-            set { _filePath = value; OnPropertyChanged(); }
+            set { _filePath = value; OnNotifyPropertyChanged(); }
             get { return _filePath; }
         }
 
         public Graph<VertexBase> Graph
         {
             get { return _graph; }
-            private set { _graph = value; OnPropertyChanged();}
+            private set { _graph = value; OnNotifyPropertyChanged(); }
         }
 
         public bool IsDirected { get; set; }
@@ -47,18 +47,10 @@ namespace Graphs
             ParseCommand = new RelayCommand<string>(filePath =>
             {
                 Graph = FileParser.ParseFileToGraph(filePath, IsDirected);
-                
+
                 Console.WriteLine($"HasEulerianPath: {Graph.HasEulerianPath()}");
                 Console.WriteLine($"HasEulerianCircuit: {Graph.HasEulerianCircuit()}");
             });
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

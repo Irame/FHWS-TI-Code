@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 using GraphX;
 using GraphX.Controls;
@@ -69,27 +70,52 @@ namespace Graphs
         {
             public VisualGraphControlFactory(GraphAreaBase graphArea)
                 : base(graphArea)
+            {}
+
+            public override VertexControl CreateVertexControl(object vertexData)
             {
+                if (vertexData is VisualVertex vVertex)
+                    return new VisualVertexControl(vVertex);
+                else
+                    return new VertexControl(vertexData);
             }
 
             public override EdgeControl CreateEdgeControl(VertexControl source, VertexControl target, object edge, bool showLabels = false, bool showArrows = true, Visibility visibility = Visibility.Visible)
             {
-                var result = new VisualEdgeControl()
-                {
-                    Source = source,
-                    Target = target,
-                    Edge = edge,
-                    ShowLabel = showLabels,
-                    ShowArrows = showArrows,
-                    Visibility = visibility
-                };
+                return new VisualEdgeControl(source, target, (VisualEdge)edge, showLabels, showArrows) { Visibility = visibility };
+            }
+        }
 
-                return result;
+        class VisualVertexControl : VertexControl
+        {
+            public VisualVertexControl(VisualVertex vertexData, bool tracePositionChange = true,
+                bool bindToDataObject = true) : base(vertexData, tracePositionChange, bindToDataObject)
+            {
+                BindingOperations.SetBinding(this, ForegroundProperty, new Binding("ForegroundBrush")
+                {
+                    Source = vertexData.Vertex,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                });
+
+                BindingOperations.SetBinding(this, BackgroundProperty, new Binding("BackgroundBrush")
+                {
+                    Source = vertexData.Vertex,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                });
             }
         }
 
         class VisualEdgeControl : EdgeControl
         {
+            public VisualEdgeControl(VertexControl source, VertexControl target, VisualEdge edgeData, bool showLabels = false, bool showArrows = true) : base(source, target, edgeData, showLabels, showArrows)
+            {
+                BindingOperations.SetBinding(this, ForegroundProperty, new Binding("StrokeBrush")
+                {
+                    Source = edgeData.Edge,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                });
+            }
+
             public override void OnApplyTemplate()
             {
                 base.OnApplyTemplate();
@@ -137,15 +163,16 @@ namespace Graphs
     {
         public EdgeBase<VertexBase> Edge { get; }
 
+        public new double Weight => Edge.Weight ?? base.Weight;
+
         public VisualEdge(EdgeBase<VertexBase> edge, Dictionary<string, VisualVertex> vertexDict) : base(vertexDict[edge.Source.Name], vertexDict[edge.Target.Name])
         {
             Edge = edge;
-            Weight = edge.Weight ?? Weight;
         }
 
         public override string ToString()
         {
-            return $"{Edge.Weight}";
+            return $"{Weight}";
         }
     }
 }
