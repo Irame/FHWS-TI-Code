@@ -38,7 +38,7 @@ namespace Graphs
             
             SetVerticesDrag(true, true);
             ShowAllEdgesLabels();
-            //AlignAllEdgesLabels();
+            AlignAllEdgesLabels();
         }
 
         public void UpdateGraph(Graph<VertexBase> newGraph)
@@ -100,24 +100,20 @@ namespace Graphs
 
             public override void UpdateEdge(bool updateLabel = true)
             {
-                base.UpdateEdge(updateLabel);
-                if (!ShowArrows && LinePathObject != null)
+                if (!ShowArrows && (EdgePointerForTarget != null || EdgePointerForSource != null))
                 {
-                    // Hide arrow
-                    EdgePointerForSource?.Hide();
-                    EdgePointerForTarget?.Hide();
-
-                    // Force line length to connect source/target
-                    Geometry linegeometry = new PathGeometry(new[]
+                    if (EdgePointerForTarget != null)
                     {
-                        new PathFigure(Source.GetCenterPosition(), new [] {
-                            new LineSegment(Target.GetCenterPosition(), isStroked: true)
-                        }, closed: false)
-                    });
-
-                    LinePathObject.Data = linegeometry;
-
+                        EdgePointerForTarget?.Hide();
+                        EdgePointerForTarget = null;
+                    }
+                    if (EdgePointerForSource != null)
+                    {
+                        EdgePointerForSource?.Hide();
+                        EdgePointerForSource = null;
+                    }
                 }
+                base.UpdateEdge(updateLabel);
             }
         }
     }
