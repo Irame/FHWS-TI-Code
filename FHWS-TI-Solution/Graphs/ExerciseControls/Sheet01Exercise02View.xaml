@@ -27,7 +27,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Vertical" Margin="10,0,10,0">
-        <Label Content="Check For Eulerian:"/>
+        <Label Content="Check For Eulerian:" FontSize="14"/>
         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
             <Button Content="Path" Width="50" Command="{Binding CheckForEulerianPathsCommand}"/>
             <Image DataContext="{Binding Path=EulerianPathCheckResult}" Style="{StaticResource CheckResultImageStyle}" Margin="10,0,0,0"/>
@@ -36,5 +36,11 @@
             <Button Content="Circuit" Width="50" Command="{Binding CheckForEulerianCircuitsCommand}"/>
             <Image DataContext="{Binding Path=EulerianCircuitCheckResult}" Style="{StaticResource CheckResultImageStyle}" Margin="10,0,0,0"/>
         </StackPanel>
+        <Label Content="Animations:" FontSize="14"/>
+        <Label Content="Speed:" FontSize="12"/>
+        <Slider x:Name="AnimationSpeedSlider" Minimum="1" Maximum="10" Value="2"/>
+        <Button Content="Depth-first search" Command="{Binding AnimateDepthFirstSearchCommand}" CommandParameter="{Binding ElementName=AnimationSpeedSlider, Path=Value}" Margin="0,10,0,0"/>
+        <Button Content="Breadth-first search" Command="{Binding AnimateDepthFirstSearchCommand}" CommandParameter="{Binding ElementName=AnimationSpeedSlider, Path=Value}" Margin="0,10,0,0"/>
+        <Button Content="Clear coloring" Command="{Binding ClearColoringCommand}" Margin="0,15,0,0"/>
     </StackPanel>
 </UserControl>

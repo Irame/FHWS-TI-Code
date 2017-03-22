@@ -17,17 +17,26 @@ namespace Graphs.ExerciseControls
         public RelayCommand CheckForEulerianPathsCommand { get; }
         public RelayCommand CheckForEulerianCircuitsCommand { get; }
 
+        public RelayCommand<double> AnimateBreadthFirstSearchCommand { get; }
+        public RelayCommand<double> AnimateDepthFirstSearchCommand { get; }
+        public RelayCommand ClearColoringCommand { get; }
+
         public Sheet01Exercise02ViewModel()
         {
-            CheckForEulerianPathsCommand = new RelayCommand(() =>
-            {
-                EulerianPathCheckResult.Value = _graph?.HasEulerianPath();
-            });
+            CheckForEulerianPathsCommand = new RelayCommand(
+                () => EulerianPathCheckResult.Value = _graph?.HasEulerianPath());
 
-            CheckForEulerianCircuitsCommand = new RelayCommand(() =>
-            {
-                EulerianCircuitCheckResult.Value = _graph?.HasEulerianCircuit();
-            });
+            CheckForEulerianCircuitsCommand = new RelayCommand(
+                () => EulerianCircuitCheckResult.Value = _graph?.HasEulerianCircuit());
+
+            AnimateBreadthFirstSearchCommand = new RelayCommand<double>(
+                speed => _graph.WalkThroughBreadthFirstSearch((int)(1000/speed)));
+
+            AnimateDepthFirstSearchCommand = new RelayCommand<double>(
+                speed => _graph.WalkThroughDepthFirstSearch((int)(1000/speed)));
+
+            ClearColoringCommand = new RelayCommand(
+                () => _graph.ResetColoring());
         }
 
         public override void UpdateGraph(Graph<VertexBase> graph)
