@@ -11,8 +11,8 @@ namespace Graphs.ExerciseControls
     {
         private Graph<VertexBase> _graph;
 
-        public ValueWraper<bool?> EulerianPathCheckResult { get; } = new ValueWraper<bool?>(false);
-        public ValueWraper<bool?> EulerianCircuitCheckResult { get; } = new ValueWraper<bool?>(false);
+        public ValueWraper<bool?> EulerianPathCheckResult { get; } = new ValueWraper<bool?>(null);
+        public ValueWraper<bool?> EulerianCircuitCheckResult { get; } = new ValueWraper<bool?>(null);
 
         public RelayCommand CheckForEulerianPathsCommand { get; }
         public RelayCommand CheckForEulerianCircuitsCommand { get; }
