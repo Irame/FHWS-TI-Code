@@ -139,21 +139,21 @@ namespace Graphs
             return _vertexEdgeDictionary[vertex].Sum(edge => edge.Target == vertex ? 1 : 0);
         }
 
-        public void BreadthFirstSearch(TVertex startVertex, Action<TVertex> visitorAction)
+        public void BreadthFirstSearch(TVertex startVertex, Predicate<TVertex> visitorAction)
         {
             Queue<TVertex> queue = new Queue<TVertex>(new []{startVertex});
             HashSet<TVertex> visited = new HashSet<TVertex>(queue);
             while (!queue.IsEmpty())
             {
                 var curVertex = queue.Dequeue();
-                visitorAction(curVertex);
+                if (visitorAction(curVertex)) break;
                 var neighbors = GetNeighbors(curVertex).Distinct().Except(visited).ToArray();
                 queue.EnqueueRange(neighbors);
                 visited.AddRange(neighbors);
             }
         }
 
-        public void DepthFirstSearch(TVertex startVertex, Action<TVertex> visitorAction)
+        public void DepthFirstSearch(TVertex startVertex, Predicate<TVertex> visitorAction)
         {
             Stack<TVertex> stack = new Stack<TVertex>(new[] { startVertex });
             HashSet<TVertex> visited = new HashSet<TVertex>();
@@ -162,7 +162,7 @@ namespace Graphs
                 var curVertex = stack.Pop();
                 if (!visited.Contains(curVertex))
                 {
-                    visitorAction(curVertex);
+                    if (visitorAction(curVertex)) break;
                     visited.Add(curVertex);
                     stack.PushRange(GetNeighbors(curVertex).Distinct().Except(visited));
                 }
@@ -178,6 +178,7 @@ namespace Graphs
 
         public void ResetColoring()
         {
+            IsAnimationPlaying = false;
             foreach (var vertex in Vertices)
             {
                 vertex.BackgroundBrush = VertexBase.DefaultBackgroundBrush;

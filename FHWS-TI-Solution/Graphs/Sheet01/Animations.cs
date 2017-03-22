@@ -21,7 +21,9 @@ namespace Graphs
                 BreadthFirstSearch(Vertices.First(), vertex =>
                 {
                     Task.Delay(speed).Wait();
-                    vertex.BackgroundBrush = Brushes.LimeGreen;
+                    if (IsAnimationPlaying)
+                        vertex.BackgroundBrush = Brushes.LimeGreen;
+                    return !IsAnimationPlaying;
                 });
             }).ContinueWith(task => IsAnimationPlaying = false);
         }
@@ -36,7 +38,9 @@ namespace Graphs
                 DepthFirstSearch(Vertices.First(), vertex =>
                 {
                     Task.Delay(speed).Wait();
-                    vertex.BackgroundBrush = Brushes.LimeGreen;
+                    if (IsAnimationPlaying)
+                        vertex.BackgroundBrush = Brushes.LimeGreen;
+                    return !IsAnimationPlaying;
                 });
             }).ContinueWith(task => IsAnimationPlaying = false);
         }

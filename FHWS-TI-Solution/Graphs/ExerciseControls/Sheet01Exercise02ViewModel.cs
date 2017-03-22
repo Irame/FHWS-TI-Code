@@ -30,13 +30,13 @@ namespace Graphs.ExerciseControls
                 () => EulerianCircuitCheckResult.Value = _graph?.HasEulerianCircuit());
 
             AnimateBreadthFirstSearchCommand = new RelayCommand<double>(
-                speed => _graph.WalkThroughBreadthFirstSearch((int)(1000/speed)));
+                speed => _graph?.WalkThroughBreadthFirstSearch((int)(1000/speed)));
 
             AnimateDepthFirstSearchCommand = new RelayCommand<double>(
-                speed => _graph.WalkThroughDepthFirstSearch((int)(1000/speed)));
+                speed => _graph?.WalkThroughDepthFirstSearch((int)(1000/speed)));
 
             ClearColoringCommand = new RelayCommand(
-                () => _graph.ResetColoring());
+                () => _graph?.ResetColoring());
         }
 
         public override void UpdateGraph(Graph<VertexBase> graph)
