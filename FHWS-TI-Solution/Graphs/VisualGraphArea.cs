@@ -111,6 +111,8 @@ namespace Graphs
             protected override void OnMouseUp(MouseButtonEventArgs e)
             {
                 base.OnMouseUp(e);
+                if ((Keyboard.Modifiers & ModifierKeys.Control) == 0)
+                    return;
                 var vertex = ((VisualVertex) Vertex).Vertex;
                 vertex.IsSelected = !vertex.IsSelected;
             }
