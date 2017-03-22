@@ -82,6 +82,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileParser.cs" />
+    <Compile Include="Sheet01\Animations.cs" />
     <Compile Include="Sheet01\EulerianChecks.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\PropertyChangedBase.cs" />
