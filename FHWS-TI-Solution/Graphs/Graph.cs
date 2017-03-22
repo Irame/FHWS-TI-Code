@@ -153,6 +153,22 @@ namespace Graphs
             }
         }
 
+        public void DepthFirstSearch(TVertex startVertex, Action<TVertex> visitorAction)
+        {
+            Stack<TVertex> stack = new Stack<TVertex>(new[] { startVertex });
+            HashSet<TVertex> visited = new HashSet<TVertex>();
+            while (!stack.IsEmpty())
+            {
+                var curVertex = stack.Pop();
+                if (!visited.Contains(curVertex))
+                {
+                    visitorAction(curVertex);
+                    visited.Add(curVertex);
+                    stack.PushRange(GetNeighbors(curVertex).Distinct().Except(visited));
+                }
+            }
+        }
+
         public bool IsConnected()
         {
             var allVertices = Vertices.ToHashSet();

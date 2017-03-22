@@ -25,5 +25,20 @@ namespace Graphs
                 });
             }).ContinueWith(task => IsAnimationPlaying = false);
         }
+
+        public void WalkThroughDepthFirstSearch(int speed = 500)
+        {
+            if (IsAnimationPlaying) return;
+
+            IsAnimationPlaying = true;
+            Task.Run(() =>
+            {
+                DepthFirstSearch(Vertices.First(), vertex =>
+                {
+                    Task.Delay(speed).Wait();
+                    vertex.BackgroundBrush = Brushes.LimeGreen;
+                });
+            }).ContinueWith(task => IsAnimationPlaying = false);
+        }
     }
 }
