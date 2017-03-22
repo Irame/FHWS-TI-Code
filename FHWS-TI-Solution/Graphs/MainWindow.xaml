@@ -5,21 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:graphxctrl="clr-namespace:GraphX.Controls;assembly=GraphX.WPF.Controls"
         xmlns:local="clr-namespace:Graphs"
+        xmlns:utils="clr-namespace:Graphs.Utils"
+        xmlns:exerciseControls="clr-namespace:Graphs.ExerciseControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="700">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Utils\GridExpander.Generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type exerciseControls:Sheet01Exercise02ViewModel}">
+                <exerciseControls:Sheet01Exercise02View />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
     <Grid>
-        <DockPanel HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Top">
             <Label Content="Path to File:" DockPanel.Dock="Left"/>
             <CheckBox Content="Directed" IsChecked="{Binding IsDirected}" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0,0,0"/>
             <Button Content="Parse" Width="75" Command="{Binding ParseCommand}" CommandParameter="{Binding ElementName=FilePathTextBox, Path=Text}" DockPanel.Dock="Right" Margin="10,0,0,0"/>
             <Button Content="Browse" Width="75" DockPanel.Dock="Right" Command="{Binding BrowseCommand}"/>
             <TextBox x:Name="FilePathTextBox" TextWrapping="NoWrap" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="0,0,10,0" Text="{Binding FilePath, Mode=TwoWay}" IsReadOnly="True"/>
         </DockPanel>
-        <graphxctrl:ZoomControl x:Name="GraphZoomControl" Margin="0,41,0,0">
+        <graphxctrl:ZoomControl x:Name="GraphZoomControl" Grid.Column="0" Grid.Row="1">
             <local:VisualGraphArea x:Name="VisualGraphArea" Graph="{Binding Graph}"/>
         </graphxctrl:ZoomControl>
+        <utils:GridExpander x:Name="GridExpander"  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch"  HorizontalAlignment="Left" Direction="Next" Width="8"/>
+        <ComboBox x:Name="ExerciseSelect" Grid.Column="2" Grid.Row="0" Margin="10" ItemsSource="{Binding ExerciseNames}" SelectedItem="{Binding SelectedExercise}"/>
+        <ContentControl x:Name="ExerciseContentControl" Grid.Column="2" Grid.Row="1" Content="{Binding CurExerciseControl}"/>
     </Grid>
 </Window>

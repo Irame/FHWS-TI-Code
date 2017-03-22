@@ -81,15 +81,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ExerciseControls\Sheet01Exercise02View.xaml.cs">
+      <DependentUpon>Sheet01Exercise02View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExerciseControls\Sheet01Exercise02ViewModel.cs" />
     <Compile Include="FileParser.cs" />
     <Compile Include="Sheet01\Animations.cs" />
     <Compile Include="Sheet01\EulerianChecks.cs" />
+    <Compile Include="Utils\Converter.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\GridExpander.cs" />
     <Compile Include="Utils\PropertyChangedBase.cs" />
+    <Compile Include="Utils\ViewModelBase.cs" />
     <Compile Include="VisualGraphArea.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\RelayCommands.cs" />
     <Compile Include="Graph.cs" />
+    <Page Include="ExerciseControls\Sheet01Exercise02View.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,6 +114,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Utils\GridExpander.Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

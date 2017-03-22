@@ -6,7 +6,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using Graphs.Annotations;
+using Graphs.ExerciseControls;
 using Graphs.Utils;
 using Microsoft.Win32;
 
@@ -14,12 +17,36 @@ namespace Graphs
 {
     class MainWindowViewModel : PropertyChangedBase
     {
+        private static Dictionary<string, ViewModelBase> _exerciseModelDict = new Dictionary<string, ViewModelBase>
+        {
+            {"Blatt 1, Aufgabe 2", new Sheet01Exercise02ViewModel()}
+        };
+
+        public List<string> ExerciseNames { get; } = _exerciseModelDict.Keys.ToList();
+
         public RelayCommand BrowseCommand { get; }
 
         public RelayCommand<string> ParseCommand { get; }
+        
+        public bool IsDirected { get; set; }
 
-        private string _filePath;
-        private Graph<VertexBase> _graph;
+
+        public ViewModelBase CurExerciseControl
+        {
+            get { return _curExerciseControl; }
+            set { _curExerciseControl = value; OnNotifyPropertyChanged(); }
+        }
+
+        public string SelectedExercise
+        {
+            get { return _selectedExercise; }
+            set
+            {
+                if (_selectedExercise == value) return;
+                _selectedExercise = value;
+                CurExerciseControl = _exerciseModelDict[_selectedExercise];
+            }
+        }
 
         public string FilePath
         {
@@ -33,10 +60,18 @@ namespace Graphs
             private set { _graph = value; OnNotifyPropertyChanged(); }
         }
 
-        public bool IsDirected { get; set; }
+
+        private string _selectedExercise;
+        private string _filePath;
+        private Graph<VertexBase> _graph;
+        private ViewModelBase _curExerciseControl;
 
         public MainWindowViewModel()
         {
+            ExerciseNames.Sort();
+
+            SelectedExercise = ExerciseNames.First();
+
             BrowseCommand = new RelayCommand(() =>
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
