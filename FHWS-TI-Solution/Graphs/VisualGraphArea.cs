@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using GraphX;
@@ -42,7 +43,7 @@ namespace Graphs
             AlignAllEdgesLabels();
         }
 
-        public void UpdateGraph(Graph<VertexBase> newGraph)
+        private void UpdateGraph(Graph<VertexBase> newGraph)
         {
             var graph = new BidirectionalGraph<VisualVertex, VisualEdge>();
             var vertexDict = newGraph.NameVertexDictionary.ToDictionary(kvp => kvp.Key, kvp => new VisualVertex(kvp.Value));
@@ -53,6 +54,8 @@ namespace Graphs
             ShowAllEdgesArrows(newGraph.IsDirected);
             ClearLayout();
             GenerateGraph(graph);
+
+            if (Parent is ZoomControl zoomControl) zoomControl.ZoomToFill();
         }
 
         public static readonly DependencyProperty GraphProperty = DependencyProperty.Register(
@@ -126,7 +129,7 @@ namespace Graphs
 
             public override void UpdateEdge(bool updateLabel = true)
             {
-                if (!ShowArrows && (EdgePointerForTarget != null || EdgePointerForSource != null))
+                if (!ShowArrows)
                 {
                     if (EdgePointerForTarget != null)
                     {
@@ -140,6 +143,10 @@ namespace Graphs
                     }
                 }
                 base.UpdateEdge(updateLabel);
+                if (((VisualEdge)Edge).Edge.Weight == null)
+                    EdgeLabelControl?.Hide();
+                else
+                    EdgeLabelControl?.Show();
             }
         }
     }
