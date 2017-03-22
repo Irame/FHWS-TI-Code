@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
+using Graphs.Annotations;
 using Graphs.Utils;
 
 namespace Graphs
@@ -139,7 +140,7 @@ namespace Graphs
             return _vertexEdgeDictionary[vertex].Sum(edge => edge.Target == vertex ? 1 : 0);
         }
 
-        public void BreadthFirstSearch(TVertex startVertex, Predicate<TVertex> visitorAction)
+        public void BreadthFirstSearch([NotNull] TVertex startVertex, Predicate<TVertex> visitorAction)
         {
             Queue<TVertex> queue = new Queue<TVertex>(new []{startVertex});
             HashSet<TVertex> visited = new HashSet<TVertex>(queue);
@@ -153,7 +154,7 @@ namespace Graphs
             }
         }
 
-        public void DepthFirstSearch(TVertex startVertex, Predicate<TVertex> visitorAction)
+        public void DepthFirstSearch([NotNull] TVertex startVertex, Predicate<TVertex> visitorAction)
         {
             Stack<TVertex> stack = new Stack<TVertex>(new[] { startVertex });
             HashSet<TVertex> visited = new HashSet<TVertex>();
@@ -181,12 +182,11 @@ namespace Graphs
             IsAnimationPlaying = false;
             foreach (var vertex in Vertices)
             {
-                vertex.BackgroundBrush = VertexBase.DefaultBackgroundBrush;
-                vertex.ForegroundBrush = VertexBase.DefaultForegroundBrush;
+                vertex.ResetColor();
             }
             foreach (var edge in Edges)
             {
-                edge.StrokeBrush = EdgeBase<VertexBase>.DefaultStrokeBrush;
+                edge.ResetColor();
             }
         }
     }
@@ -195,9 +195,17 @@ namespace Graphs
     {
         public static Brush DefaultForegroundBrush { get; } = Brushes.Black;
         public static Brush DefaultBackgroundBrush { get; } = Brushes.LightGray;
+        public static Brush SelectedForegroundBrush { get; } = Brushes.White;
+        public static Brush SelectedBackgroundBrush { get; } = Brushes.DimGray;
 
         public string Name { get; set; }
         public string Data { get; set; }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { _isSelected = value; ResetColor(); }
+        }
 
         public Brush ForegroundBrush
         {
@@ -213,6 +221,21 @@ namespace Graphs
 
         private Brush _foregroundBrush = DefaultForegroundBrush;
         private Brush _backgroundBrush = DefaultBackgroundBrush;
+        private bool _isSelected;
+
+        public void ResetColor()
+        {
+            if (IsSelected)
+            {
+                ForegroundBrush = SelectedForegroundBrush;
+                BackgroundBrush = SelectedBackgroundBrush;
+            }
+            else
+            {
+                ForegroundBrush = DefaultForegroundBrush;
+                BackgroundBrush = DefaultBackgroundBrush;
+            }
+        }
 
         public override string ToString()
         {
@@ -242,6 +265,11 @@ namespace Graphs
             Source = source;
             Target = target;
             Weight = weight;
+        }
+
+        public void ResetColor()
+        {
+            StrokeBrush = DefaultStrokeBrush;
         }
     }
 }

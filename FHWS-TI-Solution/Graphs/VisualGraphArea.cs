@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using GraphX;
 using GraphX.Controls;
@@ -105,6 +106,13 @@ namespace Graphs
                     Source = vertexData.Vertex,
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                 });
+            }
+
+            protected override void OnMouseUp(MouseButtonEventArgs e)
+            {
+                base.OnMouseUp(e);
+                var vertex = ((VisualVertex) Vertex).Vertex;
+                vertex.IsSelected = !vertex.IsSelected;
             }
         }
 

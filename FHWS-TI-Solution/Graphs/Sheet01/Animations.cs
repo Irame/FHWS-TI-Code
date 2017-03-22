@@ -13,12 +13,13 @@ namespace Graphs
 
         public void WalkThroughBreadthFirstSearch(int speed = 500)
         {
-            if (IsAnimationPlaying) return;
+            if (IsAnimationPlaying || _nameVertexDictionary.Count == 0)
+                return;
 
             IsAnimationPlaying = true;
             Task.Run(() =>
             {
-                BreadthFirstSearch(Vertices.First(), vertex =>
+                BreadthFirstSearch(Vertices.FirstOrDefault(vertex => vertex.IsSelected) ?? Vertices.First(), vertex =>
                 {
                     Task.Delay(speed).Wait();
                     if (IsAnimationPlaying)
@@ -30,12 +31,13 @@ namespace Graphs
 
         public void WalkThroughDepthFirstSearch(int speed = 500)
         {
-            if (IsAnimationPlaying) return;
+            if (IsAnimationPlaying || _nameVertexDictionary.Count == 0)
+                return;
 
             IsAnimationPlaying = true;
             Task.Run(() =>
             {
-                DepthFirstSearch(Vertices.First(), vertex =>
+                DepthFirstSearch(Vertices.FirstOrDefault(vertex => vertex.IsSelected) ?? Vertices.First(), vertex =>
                 {
                     Task.Delay(speed).Wait();
                     if (IsAnimationPlaying)
