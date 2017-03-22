@@ -162,7 +162,9 @@ namespace Graphs
 
         public override string ToString()
         {
-            return $"{Vertex.Name}: {Vertex.Data}";
+            return Vertex.Data != null 
+                ? $"{Vertex.Name}: {Vertex.Data}" 
+                : Vertex.Name;
         }
     }
 
