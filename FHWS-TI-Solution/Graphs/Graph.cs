@@ -175,10 +175,26 @@ namespace Graphs
             BreadthFirstSearch(allVertices.First(), vertex => allVertices.Remove(vertex));
             return allVertices.IsEmpty();
         }
+
+        public void ResetColoring()
+        {
+            foreach (var vertex in Vertices)
+            {
+                vertex.BackgroundBrush = VertexBase.DefaultBackgroundBrush;
+                vertex.ForegroundBrush = VertexBase.DefaultForegroundBrush;
+            }
+            foreach (var edge in Edges)
+            {
+                edge.StrokeBrush = EdgeBase<VertexBase>.DefaultStrokeBrush;
+            }
+        }
     }
 
     class VertexBase : PropertyChangedBase
     {
+        public static Brush DefaultForegroundBrush { get; } = Brushes.Black;
+        public static Brush DefaultBackgroundBrush { get; } = Brushes.LightGray;
+
         public string Name { get; set; }
         public string Data { get; set; }
 
@@ -194,8 +210,8 @@ namespace Graphs
             set { _backgroundBrush = value; OnNotifyPropertyChanged(); }
         }
 
-        private Brush _foregroundBrush = Brushes.Black;
-        private Brush _backgroundBrush = Brushes.LightGray;
+        private Brush _foregroundBrush = DefaultForegroundBrush;
+        private Brush _backgroundBrush = DefaultBackgroundBrush;
 
         public override string ToString()
         {
@@ -206,6 +222,8 @@ namespace Graphs
     class EdgeBase<TVertex> : PropertyChangedBase
         where TVertex: VertexBase
     {
+        public static Brush DefaultStrokeBrush { get; } = Brushes.Black;
+
         public TVertex Source { get; }
         public TVertex Target { get; }
         public double? Weight { get; set; }
@@ -216,7 +234,7 @@ namespace Graphs
             set { _strokeBrush = value; OnNotifyPropertyChanged(); }
         }
 
-        private Brush _strokeBrush = Brushes.Black;
+        private Brush _strokeBrush = DefaultStrokeBrush;
 
         public EdgeBase(TVertex source, TVertex target, double? weight = null)
         {
