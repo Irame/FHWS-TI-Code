@@ -40,7 +40,7 @@
         <Label Content="Speed:" FontSize="12"/>
         <Slider x:Name="AnimationSpeedSlider" Minimum="1" Maximum="10" Value="2"/>
         <Button Content="Depth-first search" Command="{Binding AnimateDepthFirstSearchCommand}" CommandParameter="{Binding ElementName=AnimationSpeedSlider, Path=Value}" Margin="0,10,0,0"/>
-        <Button Content="Breadth-first search" Command="{Binding AnimateDepthFirstSearchCommand}" CommandParameter="{Binding ElementName=AnimationSpeedSlider, Path=Value}" Margin="0,10,0,0"/>
+        <Button Content="Breadth-first search" Command="{Binding AnimateBreadthFirstSearchCommand}" CommandParameter="{Binding ElementName=AnimationSpeedSlider, Path=Value}" Margin="0,10,0,0"/>
         <Button Content="Clear coloring" Command="{Binding ClearColoringCommand}" Margin="0,15,0,0"/>
     </StackPanel>
 </UserControl>
