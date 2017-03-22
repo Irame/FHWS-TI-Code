@@ -5,9 +5,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Graphs.ExerciseControls"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="150">
-    <Grid>
-        <Label Content="Label" HorizontalAlignment="Left" Margin="51,46,0,0" VerticalAlignment="Top"/>
-
-    </Grid>
+             d:DesignHeight="500" d:DesignWidth="150" d:DataContext="{d:DesignInstance d:Type=local:Sheet01Exercise02ViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/CheckResultIcons.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="CheckResultImageStyle" TargetType="Image">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Value}" Value="{x:Null}">
+                        <Setter Property="Source" Value="{StaticResource QuestionMarkDrawingImage}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Value}" Value="False">
+                        <Setter Property="Source" Value="{StaticResource CrossMarkDrawingImage}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Value}" Value="True">
+                        <Setter Property="Source" Value="{StaticResource CheckMarkDrawingImage}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Orientation="Vertical" Margin="10,0,10,0">
+        <Label Content="Check For Eulerian:"/>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <Button Content="Path" Width="50" Command="{Binding CheckForEulerianPathsCommand}"/>
+            <Image DataContext="{Binding Path=EulerianPathCheckResult}" Style="{StaticResource CheckResultImageStyle}" Margin="10,0,0,0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <Button Content="Circuit" Width="50" Command="{Binding CheckForEulerianCircuitsCommand}"/>
+            <Image DataContext="{Binding Path=EulerianCircuitCheckResult}" Style="{StaticResource CheckResultImageStyle}" Margin="10,0,0,0"/>
+        </StackPanel>
+    </StackPanel>
 </UserControl>

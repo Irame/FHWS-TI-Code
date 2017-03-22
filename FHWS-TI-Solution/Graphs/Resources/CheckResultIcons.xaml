@@ -1,0 +1,22 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Color x:Key="QuestionMarkColor1">#FF000000</Color>
+  <SolidColorBrush x:Key="QuestionMarkColorBrush1" Color="{DynamicResource QuestionMarkColor1}" />
+  <Geometry x:Key="CrossMarkGeometry">F1 M24,24z M0,0z M24,20.188L15.685,11.979 23.885,3.697 20.188,-8.88178419700125E-16 11.976,8.318 3.666,0.114999999999998 -1.33226762955019E-15,3.781 8.321,12.021 0.114999999999998,20.334 3.781,24 12.018,15.682 20.303,23.885z</Geometry>
+  <SolidColorBrush x:Key="CrossMarkBrushColor" Color="{Binding Color, Source={StaticResource QuestionMarkColorBrush1}}" />
+  <DrawingGroup x:Key="CrossMarkDrawingGroup" ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+    <GeometryDrawing Brush="{DynamicResource CrossMarkBrushColor}" Geometry="{StaticResource CrossMarkGeometry}" />
+  </DrawingGroup>
+  <DrawingImage x:Key="CrossMarkDrawingImage" Drawing="{StaticResource CrossMarkDrawingGroup}" />
+  <Geometry x:Key="QuestionMarkGeometry">F1 M24,24z M0,0z M14.601,21.5C14.601,22.88 13.485,24 12.102,24 10.724,24 9.603,22.88 9.603,21.5 9.603,20.12 10.724,19 12.102,19 13.485,19 14.601,20.119 14.601,21.5z M12.181,0C8.152,0,5.121,2.693,5.121,8L9.076,8C9.076,5.696 9.982,3.811 12.1,3.811 13.347,3.811 14.67,4.639 14.784,6.222 14.907,7.888 14.017,8.733 12.892,9.804 9.968,12.584 10.076,13.853 10.076,17L14.019,17C14.019,15.548 13.862,14.492 15.857,12.341 17.188,10.905 18.843,9.119 18.878,6.398 18.925,2.435 16.127,1.77635683940025E-15 12.181,1.77635683940025E-15z</Geometry>
+  <SolidColorBrush x:Key="QuestionMarkBrushColor" Color="{Binding Color, Source={StaticResource QuestionMarkColorBrush1}}" />
+  <DrawingGroup x:Key="QuestionMarkDrawingGroup" ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+    <GeometryDrawing Brush="{DynamicResource QuestionMarkBrushColor}" Geometry="{StaticResource QuestionMarkGeometry}" />
+  </DrawingGroup>
+  <DrawingImage x:Key="QuestionMarkDrawingImage" Drawing="{StaticResource QuestionMarkDrawingGroup}" />
+  <Geometry x:Key="CheckMarkGeometry">F1 M24,24z M0,0z M20.285,2L9,13.567 3.714,8.556 4.44089209850063E-16,12.272 9,21 24,5.715z</Geometry>
+  <SolidColorBrush x:Key="CheckMarkBrushColor" Color="{Binding Color, Source={StaticResource QuestionMarkColorBrush1}}" />
+  <DrawingGroup x:Key="CheckMarkDrawingGroup" ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+    <GeometryDrawing Brush="{DynamicResource CheckMarkBrushColor}" Geometry="{StaticResource CheckMarkGeometry}" />
+  </DrawingGroup>
+  <DrawingImage x:Key="CheckMarkDrawingImage" Drawing="{StaticResource CheckMarkDrawingGroup}" />
+</ResourceDictionary>

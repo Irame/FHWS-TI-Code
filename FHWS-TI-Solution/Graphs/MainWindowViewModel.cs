@@ -17,7 +17,7 @@ namespace Graphs
 {
     class MainWindowViewModel : PropertyChangedBase
     {
-        private static Dictionary<string, ViewModelBase> _exerciseModelDict = new Dictionary<string, ViewModelBase>
+        private static Dictionary<string, ExerciseViewModelBase> _exerciseModelDict = new Dictionary<string, ExerciseViewModelBase>
         {
             {"Blatt 1, Aufgabe 2", new Sheet01Exercise02ViewModel()}
         };
@@ -31,7 +31,7 @@ namespace Graphs
         public bool IsDirected { get; set; }
 
 
-        public ViewModelBase CurExerciseControl
+        public ExerciseViewModelBase CurExerciseControl
         {
             get { return _curExerciseControl; }
             set { _curExerciseControl = value; OnNotifyPropertyChanged(); }
@@ -45,6 +45,7 @@ namespace Graphs
                 if (_selectedExercise == value) return;
                 _selectedExercise = value;
                 CurExerciseControl = _exerciseModelDict[_selectedExercise];
+                CurExerciseControl.UpdateGraph(Graph);
             }
         }
 
@@ -59,12 +60,11 @@ namespace Graphs
             get { return _graph; }
             private set { _graph = value; OnNotifyPropertyChanged(); }
         }
-
-
+        
         private string _selectedExercise;
         private string _filePath;
         private Graph<VertexBase> _graph;
-        private ViewModelBase _curExerciseControl;
+        private ExerciseViewModelBase _curExerciseControl;
 
         public MainWindowViewModel()
         {
@@ -82,9 +82,7 @@ namespace Graphs
             ParseCommand = new RelayCommand<string>(filePath =>
             {
                 Graph = FileParser.ParseFileToGraph(filePath, IsDirected);
-
-                Console.WriteLine($"HasEulerianPath: {Graph.HasEulerianPath()}");
-                Console.WriteLine($"HasEulerianCircuit: {Graph.HasEulerianCircuit()}");
+                CurExerciseControl.UpdateGraph(Graph);
             });
         }
     }
