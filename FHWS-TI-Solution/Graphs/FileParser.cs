@@ -16,6 +16,9 @@ namespace Graphs
 
         public static Graph<VertexBase>  ParseFileToGraph(string filePath, bool isDirected = false)
         {
+            if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
+                return null;
+
             var vertexDict = new Dictionary<string, VertexBase>();
             var result = new Graph<VertexBase>(isDirected);
 
