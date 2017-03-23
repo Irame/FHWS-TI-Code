@@ -46,12 +46,13 @@ namespace Graphs
                 throw new InvalidDataException($"Vertex '{edge.Source.Name}' already exists but is diffrent than the given one.");
             if (_nameVertexDictionary.TryGetValue(edge.Target.Name, out TVertex origTargetVertex) && origTargetVertex != edge.Target)
                 throw new InvalidDataException($"Vertex '{edge.Source.Name}' already exists but is diffrent than the given one.");
-
+            
             _nameVertexDictionary[edge.Source.Name] = edge.Source;
             _nameVertexDictionary[edge.Target.Name] = edge.Target;
 
             _vertexEdgeDictionary.Add(edge.Source, edge);
-            _vertexEdgeDictionary.Add(edge.Target, edge);
+            if (edge.Source != edge.Target)
+                _vertexEdgeDictionary.Add(edge.Target, edge);
 
             _edgeList.Add(edge);
         }
