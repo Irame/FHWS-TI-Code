@@ -33,11 +33,10 @@ namespace Graphs
                     var vertexMatch = ParseVertexLineRegex.Match(line);
                     if (vertexMatch.Success)
                     {
-                        var newVertex = new VertexBase
-                        {
-                            Name = vertexMatch.Groups["name"].Value,
-                            Data = vertexMatch.Groups["data"].Success ? vertexMatch.Groups["data"].Value : null
-                        };
+                        var newVertex = new VertexBase(
+                            vertexMatch.Groups["name"].Value,
+                            vertexMatch.Groups["data"].Success ? vertexMatch.Groups["data"].Value : null);
+
                         vertexDict.Add(newVertex.Name, newVertex);
                         result.AddVertex(newVertex);
                         continue;

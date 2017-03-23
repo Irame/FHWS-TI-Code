@@ -202,30 +202,37 @@ namespace Graphs
         public static Brush SelectedForegroundBrush { get; } = Brushes.White;
         public static Brush SelectedBackgroundBrush { get; } = Brushes.DimGray;
 
-        public string Name { get; set; }
+        public string Name { get; }
         public string Data { get; set; }
 
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set { _isSelected = value; ResetColor(); }
         }
 
         public Brush ForegroundBrush
         {
-            get { return _foregroundBrush; }
+            get => _foregroundBrush;
             set { _foregroundBrush = value; OnNotifyPropertyChanged(); }
         }
 
         public Brush BackgroundBrush
         {
-            get { return _backgroundBrush; }
+            get => _backgroundBrush;
             set { _backgroundBrush = value; OnNotifyPropertyChanged(); }
         }
 
         private Brush _foregroundBrush = DefaultForegroundBrush;
         private Brush _backgroundBrush = DefaultBackgroundBrush;
         private bool _isSelected;
+        
+        public VertexBase(string name, string data = null)
+        {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Data = data;
+            _isSelected = false;
+        }
 
         public void ResetColor()
         {
@@ -239,6 +246,21 @@ namespace Graphs
                 ForegroundBrush = DefaultForegroundBrush;
                 BackgroundBrush = DefaultBackgroundBrush;
             }
+        }
+
+        public bool IsInEdge(EdgeBase<VertexBase> edge)
+        {
+            return this == edge.Target;
+        }
+
+        public bool IsOutEdge(EdgeBase<VertexBase> edge)
+        {
+            return this == edge.Source;
+        }
+
+        public VertexBase GetOtherVertex(EdgeBase<VertexBase> edge)
+        {
+            return this == edge.Source ? edge.Target : (this == edge.Target ? edge.Source : null);
         }
 
         public override string ToString()
@@ -258,7 +280,7 @@ namespace Graphs
 
         public Brush StrokeBrush
         {
-            get { return _strokeBrush; }
+            get => _strokeBrush;
             set { _strokeBrush = value; OnNotifyPropertyChanged(); }
         }
 
