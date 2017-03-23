@@ -173,7 +173,11 @@ namespace Graphs
         public bool IsConnected()
         {
             var allVertices = Vertices.ToHashSet();
-            BreadthFirstSearch(allVertices.First(), vertex => allVertices.Remove(vertex));
+            BreadthFirstSearch(allVertices.First(), vertex =>
+            {
+                allVertices.Remove(vertex);
+                return false;
+            });
             return allVertices.IsEmpty();
         }
 
