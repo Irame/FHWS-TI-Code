@@ -1,0 +1,20 @@
+knoten A
+knoten B
+knoten C
+knoten D
+knoten E
+knoten F
+knoten G
+knoten H
+knoten I
+
+
+kante A B
+kante A C
+kante A D
+kante B E
+kante B F
+kante C G
+kante C H
+kante D I
+kante H A

@@ -13,13 +13,15 @@ namespace Graphs.ExerciseControls
 
         public ValueWraper<bool?> EulerianPathCheckResult { get; } = new ValueWraper<bool?>(null);
         public ValueWraper<bool?> EulerianCircuitCheckResult { get; } = new ValueWraper<bool?>(null);
-
         public RelayCommand CheckForEulerianPathsCommand { get; }
         public RelayCommand CheckForEulerianCircuitsCommand { get; }
 
         public RelayCommand<double> AnimateBreadthFirstSearchCommand { get; }
         public RelayCommand<double> AnimateDepthFirstSearchCommand { get; }
         public RelayCommand ClearColoringCommand { get; }
+
+        public ValueWraper<bool?> CheckForCyclesResult { get; } = new ValueWraper<bool?>(null);
+        public RelayCommand CheckForCyclesCommand { get; }
 
         public Sheet01Exercise02ViewModel()
         {
@@ -37,6 +39,9 @@ namespace Graphs.ExerciseControls
 
             ClearColoringCommand = new RelayCommand(
                 () => _graph?.ResetColoring());
+
+            CheckForCyclesCommand = new RelayCommand(
+                () => CheckForCyclesResult.Value = _graph?.IsCyclic());
         }
 
         public override void UpdateGraph(Graph<VertexBase> graph)
@@ -44,6 +49,7 @@ namespace Graphs.ExerciseControls
             _graph = graph;
             EulerianPathCheckResult.Value = null;
             EulerianCircuitCheckResult.Value = null;
+            CheckForCyclesResult.Value = null;
         }
 
     }

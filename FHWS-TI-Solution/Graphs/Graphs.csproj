@@ -89,6 +89,7 @@
     <Compile Include="ExerciseControls\Sheet01Exercise02ViewModel.cs" />
     <Compile Include="FileParser.cs" />
     <Compile Include="Sheet01\Animations.cs" />
+    <Compile Include="Sheet01\CyclicCheck.cs" />
     <Compile Include="Sheet01\EulerianChecks.cs" />
     <Compile Include="Utils\Converter.cs" />
     <Compile Include="Utils\Extensions.cs" />
