@@ -106,6 +106,18 @@ namespace Graphs
             _edgeList.Remove(edge);
         }
 
+        public IEnumerable<EdgeBase<TVertex>> GetEdges(TVertex source, TVertex target)
+        {
+            var edgeEnumerable = _vertexEdgeDictionary[source].AsEnumerable().Where(edge => edge.Source == source && edge.Target == target);
+            if (!IsDirected) edgeEnumerable = edgeEnumerable.Where(edge => edge.Target == source && edge.Source == target);
+            return edgeEnumerable;
+        }
+
+        public EdgeBase<TVertex> GetEdge(TVertex source, TVertex target)
+        {
+            return GetEdges(source, target).FirstOrDefault();
+        }
+
         public IEnumerable<(TVertex Vertex, EdgeBase<TVertex> Edge)> GetNeighborsWithEdges(TVertex vertex, bool ignoreSelfLoops = false)
         {
             foreach (var edge in _vertexEdgeDictionary[vertex])
