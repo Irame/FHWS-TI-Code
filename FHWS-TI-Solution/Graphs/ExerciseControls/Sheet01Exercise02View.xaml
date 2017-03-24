@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Graphs.ExerciseControls"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="150" d:DataContext="{d:DesignInstance d:Type=local:Sheet01Exercise02ViewModel}">
+             d:DesignHeight="500" d:DesignWidth="150" d:DataContext="{d:DesignData d:Type=local:Sheet01Exercise02ViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
