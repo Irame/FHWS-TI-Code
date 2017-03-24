@@ -8,7 +8,7 @@
         xmlns:utils="clr-namespace:Graphs.Utils"
         xmlns:exerciseControls="clr-namespace:Graphs.ExerciseControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="700">
+        Title="TI Graph Exercise" Height="500" Width="700">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
