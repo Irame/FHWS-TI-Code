@@ -24,6 +24,8 @@
             <TextBlock Visibility="{Binding SelectedItem, ElementName=EndComboBox, Converter={utils:NullToVisibilityConverter Inverted=True}}"
                        IsHitTestVisible="False" Text="Please select ..." VerticalAlignment="Center" Margin="5,0,20,0"/>
         </Grid>
-        <Button Content="Run Dijkstra" Margin="0,10,0,0" Command="{Binding RunDijkstraCommand}"/>
+        <Label Content="Animation speed:"/>
+        <Slider x:Name="AnimationSpeedSlider" Minimum="0" Maximum="1500" Value="500" IsDirectionReversed="True" />
+        <Button Content="Run Dijkstra" Margin="0,10,0,0" Command="{Binding RunDijkstraCommand}" CommandParameter="{Binding Value, ElementName=AnimationSpeedSlider}"/>
     </StackPanel>
 </UserControl>

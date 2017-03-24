@@ -15,26 +15,17 @@ namespace Graphs.ExerciseControls
         public string StartVertexName { get; set; }
         public string EndVertexName { get; set; }
 
-        public RelayCommand RunDijkstraCommand { get; }
+        public RelayCommand<double> RunDijkstraCommand { get; }
 
         public Sheet01Exercise03ViewModel()
         {
-            RunDijkstraCommand = new RelayCommand(() =>
+            RunDijkstraCommand = new RelayCommand<double>(speed =>
             {
                 if (_graph != null && StartVertexName != null && EndVertexName != null &&
                     _graph.NameVertexDictionary.TryGetValue(StartVertexName, out VertexBase startVertex) &&
                     _graph.NameVertexDictionary.TryGetValue(EndVertexName, out VertexBase endVertex))
                 {
-                    _graph.ResetColoring();
-                    var shortestPath = _graph.FindShortestPathWithDijkstra(startVertex, endVertex);
-                    if (shortestPath == null)
-                        return;
-                    foreach (var vertexAndEdge in shortestPath)
-                    {
-                        vertexAndEdge.Vertex.BackgroundBrush = Brushes.LimeGreen;
-                        if (vertexAndEdge.EdgeToParent != null)
-                            vertexAndEdge.EdgeToParent.StrokeBrush = Brushes.LimeGreen;
-                    }
+                    _graph.WalkThroughDijkstra(startVertex, endVertex, (int)speed);
                 }
             });
         }

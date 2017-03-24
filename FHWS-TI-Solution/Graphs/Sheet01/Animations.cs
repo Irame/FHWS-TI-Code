@@ -12,44 +12,25 @@ namespace Graphs
     {
         public bool IsAnimationPlaying { get; private set; } = false;
 
-        public void WalkThroughBreadthFirstSearch(int speed = 500)
+        public async void WalkThroughBreadthFirstSearch(int speed = 500)
         {
-            if (IsAnimationPlaying || _nameVertexDictionary.Count == 0)
-                return;
-
-            IsAnimationPlaying = true;
-            Task.Run(() =>
-            {
-                BreadthFirstSearch(Vertices.FirstOrDefault(vertex => vertex.IsSelected) ?? Vertices.First(), vertex =>
-                {
-                    Task.Delay(speed).Wait();
-                    if (IsAnimationPlaying)
-                        vertex.BackgroundBrush = Brushes.LimeGreen;
-                    return !IsAnimationPlaying;
-                });
-            }).ContinueWith(task => IsAnimationPlaying = false);
+            ResetColoring();
+            await WalkThrough(
+                BreadthFirstSearch(Vertices.FirstOrDefault(vertex => vertex.IsSelected) ?? Vertices.First()),
+                vertex => vertex.BackgroundBrush = Brushes.LimeGreen, speed);
         }
 
-        public void WalkThroughDepthFirstSearch(int speed = 500)
+        public async void WalkThroughDepthFirstSearch(int speed = 500)
         {
-            if (IsAnimationPlaying || _nameVertexDictionary.Count == 0)
-                return;
-
-            IsAnimationPlaying = true;
-            Task.Run(() =>
-            {
-                DepthFirstSearch(Vertices.FirstOrDefault(vertex => vertex.IsSelected) ?? Vertices.First(), vertex =>
-                {
-                    Task.Delay(speed).Wait();
-                    if (IsAnimationPlaying)
-                        vertex.BackgroundBrush = Brushes.LimeGreen;
-                    return !IsAnimationPlaying;
-                });
-            }).ContinueWith(task => IsAnimationPlaying = false);
+            ResetColoring();
+            await WalkThrough(
+                DepthFirstSearch(Vertices.FirstOrDefault(vertex => vertex.IsSelected) ?? Vertices.First()), 
+                vertex => vertex.BackgroundBrush = Brushes.LimeGreen, speed);
         }
 
         public async void WalkThroughDijkstra(TVertex start, TVertex end, int speed = 500)
         {
+            ResetColoring();
             await WalkThrough(FindShortestPathWithDijkstra(start, end), tuple =>
             {
                 tuple.Vertex.BackgroundBrush = Brushes.LimeGreen;
@@ -60,11 +41,16 @@ namespace Graphs
 
         public async Task WalkThrough<T>(IEnumerable<T> enumerable, Action<T> action, int speed = 500)
         {
-            if (IsAnimationPlaying || _nameVertexDictionary.Count == 0)
+            if (enumerable == null || IsAnimationPlaying || _nameVertexDictionary.Count == 0)
                 return;
 
             IsAnimationPlaying = true;
-            await enumerable.DelayedForEach(action, speed).ContinueWith(task => IsAnimationPlaying = false);
+            await enumerable.DelayedForEach(element =>
+            {
+                if (IsAnimationPlaying)
+                    action(element);
+                return IsAnimationPlaying;
+            }, speed).ContinueWith(task => IsAnimationPlaying = false);
         }
     }
 }

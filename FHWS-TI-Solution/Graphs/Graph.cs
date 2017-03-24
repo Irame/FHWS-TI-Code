@@ -154,21 +154,21 @@ namespace Graphs
             return _vertexEdgeDictionary[vertex].Sum(edge => edge.Target == vertex ? 1 : 0);
         }
 
-        public void BreadthFirstSearch([NotNull] TVertex startVertex, Predicate<TVertex> visitorAction)
+        public IEnumerable<TVertex> BreadthFirstSearch([NotNull] TVertex startVertex)
         {
             Queue<TVertex> queue = new Queue<TVertex>(new []{startVertex});
             HashSet<TVertex> visited = new HashSet<TVertex>(queue);
             while (!queue.IsEmpty())
             {
                 var curVertex = queue.Dequeue();
-                if (visitorAction(curVertex)) break;
+                yield return curVertex;
                 var neighbors = GetNeighbors(curVertex).Distinct().Except(visited).ToArray();
                 queue.EnqueueRange(neighbors);
                 visited.AddRange(neighbors);
             }
         }
 
-        public void DepthFirstSearch([NotNull] TVertex startVertex, Predicate<TVertex> visitorAction)
+        public IEnumerable<TVertex> DepthFirstSearch([NotNull] TVertex startVertex)
         {
             Stack<TVertex> stack = new Stack<TVertex>(new[] { startVertex });
             HashSet<TVertex> visited = new HashSet<TVertex>();
@@ -177,7 +177,7 @@ namespace Graphs
                 var curVertex = stack.Pop();
                 if (!visited.Contains(curVertex))
                 {
-                    if (visitorAction(curVertex)) break;
+                    yield return curVertex;
                     visited.Add(curVertex);
                     stack.PushRange(GetNeighbors(curVertex).Distinct().Except(visited));
                 }
@@ -186,13 +186,7 @@ namespace Graphs
 
         public bool IsConnected()
         {
-            var allVertices = Vertices.ToHashSet();
-            BreadthFirstSearch(allVertices.First(), vertex =>
-            {
-                allVertices.Remove(vertex);
-                return false;
-            });
-            return allVertices.IsEmpty();
+            return !Vertices.Except(BreadthFirstSearch(Vertices.First())).Any();
         }
 
         public void ResetColoring()

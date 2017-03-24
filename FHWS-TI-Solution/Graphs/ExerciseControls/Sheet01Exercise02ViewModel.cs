@@ -29,10 +29,10 @@ namespace Graphs.ExerciseControls
                 () => EulerianCircuitCheckResult.Value = _graph?.HasEulerianCircuit());
 
             AnimateBreadthFirstSearchCommand = new RelayCommand<double>(
-                speed => _graph?.WalkThroughBreadthFirstSearch((int)(1000/speed)));
+                speed => _graph?.WalkThroughBreadthFirstSearch((int)speed));
 
             AnimateDepthFirstSearchCommand = new RelayCommand<double>(
-                speed => _graph?.WalkThroughDepthFirstSearch((int)(1000/speed)));
+                speed => _graph?.WalkThroughDepthFirstSearch((int)speed));
 
             CheckForCyclesCommand = new RelayCommand(
                 () => CheckForCyclesResult.Value = _graph?.IsCyclic());

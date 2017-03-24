@@ -65,14 +65,15 @@ namespace Graphs.Utils
             return null;
         }
 
-        public static async Task DelayedForEach<T>(this IEnumerable<T> enumerable, Action<T> action, int msDelay = 500)
+        public static async Task DelayedForEach<T>(this IEnumerable<T> enumerable, Predicate<T> action, int msDelay = 500)
         {
             await Task.Run(() =>
             {
                 foreach (var item in enumerable)
                 {
-                    action(item);
-                    Task.Delay(msDelay);
+                    if (!action(item))
+                        break;
+                    Task.Delay(msDelay).Wait();
                 }
             });
         }
