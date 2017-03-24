@@ -100,6 +100,7 @@
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\GridExpander.cs" />
     <Compile Include="Utils\PropertyChangedBase.cs" />
+    <Compile Include="Utils\ValueConverter.cs" />
     <Compile Include="Utils\ValueWraper.cs" />
     <Compile Include="Utils\ViewModelBase.cs" />
     <Compile Include="VisualGraphArea.cs" />

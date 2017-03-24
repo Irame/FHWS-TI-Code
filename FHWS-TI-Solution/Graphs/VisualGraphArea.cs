@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Graphs.Utils;
 using GraphX;
 using GraphX.Controls;
 using GraphX.Controls.Models;
@@ -95,13 +96,13 @@ namespace Graphs
             public VisualVertexControl(VisualVertex vertexData, bool tracePositionChange = true,
                 bool bindToDataObject = true) : base(vertexData, tracePositionChange, bindToDataObject)
             {
-                BindingOperations.SetBinding(this, ForegroundProperty, new Binding("ForegroundBrush")
+                BindingOperations.SetBinding(this, ForegroundProperty, new Binding(nameof(VertexBase.ForegroundBrush))
                 {
                     Source = vertexData.Vertex,
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                 });
 
-                BindingOperations.SetBinding(this, BackgroundProperty, new Binding("BackgroundBrush")
+                BindingOperations.SetBinding(this, BackgroundProperty, new Binding(nameof(VertexBase.BackgroundBrush))
                 {
                     Source = vertexData.Vertex,
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
@@ -116,13 +117,40 @@ namespace Graphs
                 var vertex = ((VisualVertex) Vertex).Vertex;
                 vertex.IsSelected = !vertex.IsSelected;
             }
+
+            public override void OnApplyTemplate()
+            {
+                base.OnApplyTemplate();
+                var textBlock = this.GetChildOfType<TextBlock>();
+                BindingOperations.SetBinding(textBlock, TextBlock.TextProperty, new Binding(nameof(VertexBase.Label))
+                {
+                    Source = ((VisualVertex)Vertex).Vertex,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                });
+
+                BindingOperations.SetBinding(textBlock, TextBlock.FontWeightProperty, new Binding(nameof(VertexBase.IsSelected))
+                {
+                    Source = ((VisualVertex)Vertex).Vertex,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                    Converter = new ValueConverter<bool, FontWeight>((value, p, c) => value ? FontWeights.Bold : FontWeights.Regular)
+                });
+
+                var border = this.GetChildOfType<Border>();
+                BindingOperations.SetBinding(this, Border.BorderBrushProperty, new Binding(nameof(VertexBase.IsSelected))
+                {
+                    Source = ((VisualVertex)Vertex).Vertex,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                    Converter = new ValueConverter<bool, Brush>((value, p, c) => value ? VertexBase.SelectedBorderBrush : VertexBase.DefaultBorderBrush)
+                });
+                border.BorderThickness = new Thickness(3);
+            }
         }
 
         class VisualEdgeControl : EdgeControl
         {
             public VisualEdgeControl(VertexControl source, VertexControl target, VisualEdge edgeData, bool showLabels = false, bool showArrows = true) : base(source, target, edgeData, showLabels, showArrows)
             {
-                BindingOperations.SetBinding(this, ForegroundProperty, new Binding("StrokeBrush")
+                BindingOperations.SetBinding(this, ForegroundProperty, new Binding(nameof(EdgeBase<VertexBase>.StrokeBrush))
                 {
                     Source = edgeData.Edge,
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
@@ -168,13 +196,6 @@ namespace Graphs
         public VisualVertex(VertexBase vertex)
         {
             Vertex = vertex;
-        }
-
-        public override string ToString()
-        {
-            return Vertex.Data != null 
-                ? $"{Vertex.Name}: {Vertex.Data}" 
-                : Vertex.Name;
         }
     }
 

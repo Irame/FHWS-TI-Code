@@ -201,16 +201,25 @@ namespace Graphs
     {
         public static Brush DefaultForegroundBrush { get; } = Brushes.Black;
         public static Brush DefaultBackgroundBrush { get; } = Brushes.LightGray;
-        public static Brush SelectedForegroundBrush { get; } = Brushes.White;
-        public static Brush SelectedBackgroundBrush { get; } = Brushes.DimGray;
+        public static Brush DefaultBorderBrush { get; } = Brushes.DarkGray;
+        public static Brush SelectedBorderBrush { get; } = Brushes.Black;
 
         public string Name { get; }
-        public string Data { get; set; }
+
+        public string Data
+        {
+            get { return _data; }
+            set {
+                _data = value;
+                OnNotifyPropertyChanged();
+                OnNotifyPropertyChanged(nameof(Label));
+            }
+        }
 
         public bool IsSelected
         {
             get => _isSelected;
-            set { _isSelected = value; ResetColor(); }
+            set { _isSelected = value; OnNotifyPropertyChanged(); }
         }
 
         public Brush ForegroundBrush
@@ -225,10 +234,22 @@ namespace Graphs
             set { _backgroundBrush = value; OnNotifyPropertyChanged(); }
         }
 
+        public string Label
+        {
+            get
+            {
+                string result = Name;
+                if (Data != null)
+                    result = $"{result}: {Data}";
+                return result;
+            }
+        }
+
         private Brush _foregroundBrush = DefaultForegroundBrush;
         private Brush _backgroundBrush = DefaultBackgroundBrush;
         private bool _isSelected;
-        
+        private string _data;
+
         public VertexBase(string name, string data = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -238,16 +259,8 @@ namespace Graphs
 
         public void ResetColor()
         {
-            if (IsSelected)
-            {
-                ForegroundBrush = SelectedForegroundBrush;
-                BackgroundBrush = SelectedBackgroundBrush;
-            }
-            else
-            {
-                ForegroundBrush = DefaultForegroundBrush;
-                BackgroundBrush = DefaultBackgroundBrush;
-            }
+            ForegroundBrush = DefaultForegroundBrush;
+            BackgroundBrush = DefaultBackgroundBrush;
         }
 
         public bool IsInEdge(EdgeBase<VertexBase> edge)
