@@ -25,19 +25,6 @@ namespace Graphs.Utils
             }
         }
 
-        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
-        {
-            foreach (var item in collection)
-            {
-                action(item);
-            }
-        }
-
-        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> collection)
-        {
-            return new HashSet<T>(collection);
-        }
-
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
         {
             foreach (var value in values)

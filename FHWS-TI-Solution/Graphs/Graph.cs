@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Xml.Serialization;
 using Graphs.Annotations;
 using Graphs.Utils;
+using MoreLinq;
 
 namespace Graphs
 {
@@ -105,7 +106,7 @@ namespace Graphs
             _edgeList.Remove(edge);
         }
 
-        public IEnumerable<(TVertex vertex, EdgeBase<TVertex> edge)> GetNeighborsWithEdges(TVertex vertex, bool ignoreSelfLoops = false)
+        public IEnumerable<(TVertex Vertex, EdgeBase<TVertex> Edge)> GetNeighborsWithEdges(TVertex vertex, bool ignoreSelfLoops = false)
         {
             foreach (var edge in _vertexEdgeDictionary[vertex])
             {
@@ -123,7 +124,7 @@ namespace Graphs
         }
         public IEnumerable<TVertex> GetNeighbors(TVertex vertex, bool ignoreSelfLoops = false)
         {
-            return GetNeighborsWithEdges(vertex, ignoreSelfLoops).Select(vertexEdgeTuple => vertexEdgeTuple.vertex);
+            return GetNeighborsWithEdges(vertex, ignoreSelfLoops).Select(vertexEdgeTuple => vertexEdgeTuple.Vertex);
         }
 
         public int GetDegree(TVertex vertex)
