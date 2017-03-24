@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Graphs.Utils;
 
 namespace Graphs
 {
@@ -45,6 +46,25 @@ namespace Graphs
                     return !IsAnimationPlaying;
                 });
             }).ContinueWith(task => IsAnimationPlaying = false);
+        }
+
+        public async void WalkThroughDijkstra(TVertex start, TVertex end, int speed = 500)
+        {
+            await WalkThrough(FindShortestPathWithDijkstra(start, end), tuple =>
+            {
+                tuple.Vertex.BackgroundBrush = Brushes.LimeGreen;
+                if (tuple.EdgeToParent != null)
+                    tuple.EdgeToParent.StrokeBrush = Brushes.LimeGreen;
+            }, speed);
+        }
+
+        public async Task WalkThrough<T>(IEnumerable<T> enumerable, Action<T> action, int speed = 500)
+        {
+            if (IsAnimationPlaying || _nameVertexDictionary.Count == 0)
+                return;
+
+            IsAnimationPlaying = true;
+            await enumerable.DelayedForEach(action, speed).ContinueWith(task => IsAnimationPlaying = false);
         }
     }
 }
