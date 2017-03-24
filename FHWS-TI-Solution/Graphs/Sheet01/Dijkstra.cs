@@ -32,18 +32,21 @@ namespace Graphs
             var endInfo = vertexInfoDict[end];
             while (vertexInfoDict.Count > 0)
             {
-                var curVertex = vertexInfoDict.Values.MinBy(info => info.Distance);
-                vertexInfoDict.Remove(curVertex.Vertex);
-                var neighborsWithEdges = GetNeighborsWithEdges(curVertex.Vertex, ignoreSelfLoops: true);
+                var curVertexInfo = vertexInfoDict.Values.MinBy(info => info.Distance);
+                if (curVertexInfo == endInfo)
+                    break;
+
+                vertexInfoDict.Remove(curVertexInfo.Vertex);
+                var neighborsWithEdges = GetNeighborsWithEdges(curVertexInfo.Vertex, ignoreSelfLoops: true);
                 foreach (var neighborsWithEdge in neighborsWithEdges)
                 {
                     if (vertexInfoDict.TryGetValue(neighborsWithEdge.Vertex, out DijkstraVertexInfo neighborInfo))
                     {
-                        var alt = curVertex.Distance + neighborsWithEdge.Edge.Weight ?? 1;
+                        var alt = curVertexInfo.Distance + neighborsWithEdge.Edge.Weight ?? 1;
                         if (alt < neighborInfo.Distance)
                         {
                             neighborInfo.Distance = alt;
-                            neighborInfo.Parent = curVertex;
+                            neighborInfo.Parent = curVertexInfo;
                         }
                     }
                 }
