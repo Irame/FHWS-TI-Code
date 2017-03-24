@@ -56,6 +56,8 @@ namespace Graphs
             get { return _filePath; }
         }
 
+        public RelayCommand ClearColoringCommand { get; }
+
         public Graph<VertexBase> Graph
         {
             get { return _graph; }
@@ -85,6 +87,9 @@ namespace Graphs
                 Graph = FileParser.ParseFileToGraph(filePath, IsDirected);
                 CurExerciseControl.UpdateGraph(Graph);
             });
+            
+            ClearColoringCommand = new RelayCommand(
+                () => _graph?.ResetColoring());
         }
     }
 }

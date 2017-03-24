@@ -16,7 +16,6 @@ namespace Graphs.ExerciseControls
 
         public RelayCommand<double> AnimateBreadthFirstSearchCommand { get; }
         public RelayCommand<double> AnimateDepthFirstSearchCommand { get; }
-        public RelayCommand ClearColoringCommand { get; }
 
         public ValueWraper<bool?> CheckForCyclesResult { get; } = new ValueWraper<bool?>(null);
         public RelayCommand CheckForCyclesCommand { get; }
@@ -34,9 +33,6 @@ namespace Graphs.ExerciseControls
 
             AnimateDepthFirstSearchCommand = new RelayCommand<double>(
                 speed => _graph?.WalkThroughDepthFirstSearch((int)(1000/speed)));
-
-            ClearColoringCommand = new RelayCommand(
-                () => _graph?.ResetColoring());
 
             CheckForCyclesCommand = new RelayCommand(
                 () => CheckForCyclesResult.Value = _graph?.IsCyclic());
