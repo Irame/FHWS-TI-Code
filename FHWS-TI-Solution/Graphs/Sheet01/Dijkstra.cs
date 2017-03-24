@@ -15,6 +15,7 @@ namespace Graphs
         {
             public TVertex Vertex { get; }
             public DijkstraVertexInfo Parent { get; set; } = null;
+            public EdgeBase<TVertex> ParentEdge { get; set; } = null;
             public double Distance { get; set; }
 
             public DijkstraVertexInfo(TVertex vertex, double distance)
@@ -24,7 +25,7 @@ namespace Graphs
             }
         }
 
-        public List<TVertex> FindShortestPathWithDijkstra(TVertex start, TVertex end)
+        public List<(TVertex Vertex, EdgeBase<TVertex> EdgeToParent)> FindShortestPathWithDijkstra(TVertex start, TVertex end)
         {
             var vertexInfoDict = Vertices.Select(vertex => new DijkstraVertexInfo(vertex, vertex == start ? 0 : double.PositiveInfinity))
                 .ToDictionary(vInfo => vInfo.Vertex, vInfo => vInfo);
@@ -47,6 +48,7 @@ namespace Graphs
                         {
                             neighborInfo.Distance = alt;
                             neighborInfo.Parent = curVertexInfo;
+                            neighborInfo.ParentEdge = neighborsWithEdge.Edge;
                         }
                     }
                 }
@@ -54,11 +56,11 @@ namespace Graphs
 
             if (endInfo.Parent != null)
             {
-                var reslut = new List<TVertex>();
+                var reslut = new List<(TVertex Vertex, EdgeBase<TVertex> EdgeToParent)>();
                 var curVertex = endInfo;
                 while (curVertex != null)
                 {
-                    reslut.Add(curVertex.Vertex);
+                    reslut.Add((curVertex.Vertex, curVertex.ParentEdge));
                     curVertex = curVertex.Parent;
                 }
                 reslut.Reverse();
