@@ -87,6 +87,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ExerciseControls\ExerciseViewModelBase.cs" />
+    <Compile Include="ExerciseControls\Sheet01Exercise03ViewModel.cs" />
+    <Compile Include="ExerciseControls\Sheet01Exercise03View.xaml.cs">
+      <DependentUpon>Sheet01Exercise03View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExerciseControls\Sheet01Exercise02View.xaml.cs">
       <DependentUpon>Sheet01Exercise02View.xaml</DependentUpon>
     </Compile>
@@ -107,6 +111,14 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\RelayCommands.cs" />
     <Compile Include="Graph.cs" />
+    <Page Include="ExerciseControls\ExerciseControlsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExerciseControls\Sheet01Exercise03View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ExerciseControls\Sheet01Exercise02View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

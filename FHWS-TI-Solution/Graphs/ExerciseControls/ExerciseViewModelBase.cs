@@ -9,6 +9,14 @@ namespace Graphs.ExerciseControls
 {
     abstract class ExerciseViewModelBase : ViewModelBase
     {
-        public abstract void UpdateGraph(Graph<VertexBase> graph);
+        protected Graph<VertexBase> _graph;
+
+        public void UpdateGraph(Graph<VertexBase> graph)
+        {
+            _graph = graph;
+            OnGraphUpdated();
+        }
+
+        protected abstract void OnGraphUpdated();
     }
 }

@@ -9,8 +9,6 @@ namespace Graphs.ExerciseControls
 {
     class Sheet01Exercise02ViewModel : ExerciseViewModelBase
     {
-        private Graph<VertexBase> _graph;
-
         public ValueWraper<bool?> EulerianPathCheckResult { get; } = new ValueWraper<bool?>(null);
         public ValueWraper<bool?> EulerianCircuitCheckResult { get; } = new ValueWraper<bool?>(null);
         public RelayCommand CheckForEulerianPathsCommand { get; }
@@ -44,9 +42,8 @@ namespace Graphs.ExerciseControls
                 () => CheckForCyclesResult.Value = _graph?.IsCyclic());
         }
 
-        public override void UpdateGraph(Graph<VertexBase> graph)
+        protected override void OnGraphUpdated()
         {
-            _graph = graph;
             EulerianPathCheckResult.Value = null;
             EulerianCircuitCheckResult.Value = null;
             CheckForCyclesResult.Value = null;

@@ -7,24 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="150" d:DataContext="{d:DesignData d:Type=local:Sheet01Exercise02ViewModel}">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/CheckResultIcons.xaml"></ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-            <Style x:Key="CheckResultImageStyle" TargetType="Image">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Value}" Value="{x:Null}">
-                        <Setter Property="Source" Value="{StaticResource QuestionMarkDrawingImage}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Value}" Value="False">
-                        <Setter Property="Source" Value="{StaticResource CrossMarkDrawingImage}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Value}" Value="True">
-                        <Setter Property="Source" Value="{StaticResource CheckMarkDrawingImage}" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </ResourceDictionary>
+        <ResourceDictionary Source="ExerciseControlsResourceDictionary.xaml"/>
     </UserControl.Resources>
     <StackPanel Orientation="Vertical" Margin="10,0,10,0">
         <Label Content="Check For Eulerian:" FontSize="14"/>
