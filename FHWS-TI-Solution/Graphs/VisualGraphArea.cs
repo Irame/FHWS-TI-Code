@@ -42,7 +42,6 @@ namespace Graphs
             
             SetVerticesDrag(true, true);
             ShowAllEdgesLabels();
-            AlignAllEdgesLabels();
         }
 
         private void UpdateGraph(Graph<VertexBase> newGraph)
