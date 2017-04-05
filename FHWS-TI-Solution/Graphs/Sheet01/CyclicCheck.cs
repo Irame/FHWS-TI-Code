@@ -44,7 +44,7 @@ namespace Graphs
                         else
                             return true;
                     }
-                    startingVertex = Vertices.Except(visited).First();
+                    startingVertex = Vertices.Except(visited).FirstOrDefault();
                 }
                 return false;
             }
