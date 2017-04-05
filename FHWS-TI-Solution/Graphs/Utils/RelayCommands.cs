@@ -61,7 +61,7 @@ namespace Graphs.Utils
         #region Fields
 
         readonly Action execute;
-        readonly Predicate<object> canExecute;
+        readonly Func<bool> canExecute;
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace Graphs.Utils
         {
         }
 
-        public RelayCommand(Action execute, Predicate<object> canExecute)
+        public RelayCommand(Action execute, Func<bool> canExecute)
         {
             if (execute == null)
                 throw new ArgumentNullException("execute");
@@ -87,7 +87,7 @@ namespace Graphs.Utils
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return canExecute == null || canExecute(parameter);
+            return canExecute == null || canExecute();
         }
 
         public event EventHandler CanExecuteChanged

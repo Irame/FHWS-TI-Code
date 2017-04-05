@@ -86,10 +86,11 @@ namespace Graphs
             {
                 Graph = FileParser.ParseFileToGraph(filePath, IsDirected);
                 CurExerciseControl.UpdateGraph(Graph);
-            });
+            }, File.Exists);
             
             ClearColoringCommand = new RelayCommand(
-                () => _graph?.ResetColoring());
+                () => _graph?.ResetColoring(),
+                () => _graph != null);
         }
     }
 }

@@ -23,19 +23,24 @@ namespace Graphs.ExerciseControls
         public Sheet01Exercise02ViewModel()
         {
             CheckForEulerianPathsCommand = new RelayCommand(
-                () => EulerianPathCheckResult.Value = _graph?.HasEulerianPath());
+                () => EulerianPathCheckResult.Value = _graph.HasEulerianPath(),
+                () => _graph != null);
 
             CheckForEulerianCircuitsCommand = new RelayCommand(
-                () => EulerianCircuitCheckResult.Value = _graph?.HasEulerianCircuit());
+                () => EulerianCircuitCheckResult.Value = _graph.HasEulerianCircuit(),
+                () => _graph != null);
 
             AnimateBreadthFirstSearchCommand = new RelayCommand<double>(
-                speed => _graph?.WalkThroughBreadthFirstSearch((int)speed));
+                speed => _graph.WalkThroughBreadthFirstSearch((int)speed),
+                d => _graph != null);
 
             AnimateDepthFirstSearchCommand = new RelayCommand<double>(
-                speed => _graph?.WalkThroughDepthFirstSearch((int)speed));
+                speed => _graph.WalkThroughDepthFirstSearch((int)speed),
+                d => _graph != null);
 
             CheckForCyclesCommand = new RelayCommand(
-                () => CheckForCyclesResult.Value = _graph?.IsCyclic());
+                () => CheckForCyclesResult.Value = _graph.IsCyclic(),
+                () => _graph != null);
         }
 
         protected override void OnGraphUpdated()

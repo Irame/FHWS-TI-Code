@@ -23,13 +23,12 @@ namespace Graphs.ExerciseControls
         {
             RunDijkstraCommand = new RelayCommand<double>(speed =>
             {
-                if (_graph != null && StartVertexName != null && EndVertexName != null &&
-                    _graph.NameVertexDictionary.TryGetValue(StartVertexName, out VertexBase startVertex) &&
+                if (_graph.NameVertexDictionary.TryGetValue(StartVertexName, out VertexBase startVertex) &&
                     _graph.NameVertexDictionary.TryGetValue(EndVertexName, out VertexBase endVertex))
                 {
                     _graph.WalkThroughDijkstra(startVertex, endVertex, (int)speed);
                 }
-            });
+            }, d => _graph != null && StartVertexName != null && EndVertexName != null);
 
             ColorMinimumSpanningTree = new RelayCommand(() =>
             {
@@ -39,7 +38,7 @@ namespace Graphs.ExerciseControls
 
                 foreach (var minTreeEdge in minTree.Edges)
                     minTreeEdge.StrokeBrush = Brushes.LimeGreen;
-            }, o => _graph != null);
+            }, () => _graph != null);
         }
 
         protected override void OnGraphUpdated()
