@@ -17,6 +17,8 @@ namespace Graphs.ExerciseControls
 
         public RelayCommand<double> RunDijkstraCommand { get; }
 
+        public RelayCommand ColorMinimumSpanningTree { get; }
+
         public Sheet01Exercise03ViewModel()
         {
             RunDijkstraCommand = new RelayCommand<double>(speed =>
@@ -28,6 +30,16 @@ namespace Graphs.ExerciseControls
                     _graph.WalkThroughDijkstra(startVertex, endVertex, (int)speed);
                 }
             });
+
+            ColorMinimumSpanningTree = new RelayCommand(() =>
+            {
+                var minTree = _graph.GetMinimalSpanningTreeWithKruskal();
+                foreach (var minTreeVertex in minTree.Vertices)
+                    minTreeVertex.BackgroundBrush = Brushes.LimeGreen;
+
+                foreach (var minTreeEdge in minTree.Edges)
+                    minTreeEdge.StrokeBrush = Brushes.LimeGreen;
+            }, o => _graph != null);
         }
 
         protected override void OnGraphUpdated()
