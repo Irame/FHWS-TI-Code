@@ -36,6 +36,15 @@ namespace Graphs
             IsDirected = isDirected;
         }
 
+        public Graph(Graph<TVertex> oldGraph, bool? isDirected = null)
+        {
+            _nameVertexDictionary = new Dictionary<string, TVertex>(oldGraph._nameVertexDictionary);
+            _vertexEdgeDictionary = new MultiValueDictionary<TVertex, EdgeBase<TVertex>>(oldGraph._vertexEdgeDictionary);
+            _edgeList = new List<EdgeBase<TVertex>>(oldGraph._edgeList);
+
+            IsDirected = isDirected ?? oldGraph.IsDirected;
+        }
+
         public void AddVertex(TVertex vertex)
         {
             _nameVertexDictionary[vertex.Name] = vertex;
