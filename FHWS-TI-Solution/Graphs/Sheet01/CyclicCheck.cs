@@ -22,24 +22,29 @@ namespace Graphs
             {
                 // find cycles via DFS if a vertex can be reached from two different paths there is a circle
                 var stack = new Stack<(TVertex Vertex, TVertex Parent)>();
-                stack.Push((Vertices.First(), null));
                 var visited = new HashSet<TVertex>();
-                while (!stack.IsEmpty())
+                var startingVertex = Vertices.First();
+                while (startingVertex != null)
                 {
-                    var curVertexParentPair = stack.Pop();
-                    if (!visited.Contains(curVertexParentPair.Vertex))
+                    stack.Push((startingVertex, null));
+                    while (!stack.IsEmpty())
                     {
-                        visited.Add(curVertexParentPair.Vertex);
-                        var neighbors = GetNeighbors(curVertexParentPair.Vertex, ignoreSelfLoops: true).Distinct()
-                            .Where(vertex => vertex != curVertexParentPair.Parent).ToList();
+                        var curVertexParentPair = stack.Pop();
+                        if (!visited.Contains(curVertexParentPair.Vertex))
+                        {
+                            visited.Add(curVertexParentPair.Vertex);
+                            var neighbors = GetNeighbors(curVertexParentPair.Vertex, ignoreSelfLoops: true).Distinct()
+                                .Where(vertex => vertex != curVertexParentPair.Parent).ToList();
 
-                        if (neighbors.Any(vertex => visited.Contains(vertex)))
+                            if (neighbors.Any(vertex => visited.Contains(vertex)))
+                                return true;
+
+                            stack.PushRange(neighbors.Select(vertex => (vertex, curVertexParentPair.Vertex)));
+                        }
+                        else
                             return true;
-
-                        stack.PushRange(neighbors.Select(vertex => (vertex, curVertexParentPair.Vertex)));
                     }
-                    else
-                        return true;
+                    startingVertex = Vertices.Except(visited).First();
                 }
                 return false;
             }
