@@ -100,6 +100,7 @@
     <Compile Include="Sheet01\CyclicCheck.cs" />
     <Compile Include="Sheet01\Dijkstra.cs" />
     <Compile Include="Sheet01\EulerianChecks.cs" />
+    <Compile Include="Sheet01\MinimumSpanningTree.cs" />
     <Compile Include="Utils\Converter.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\GridExpander.cs" />

@@ -40,11 +40,6 @@ namespace Graphs.Utils
             return collection.Count == 0;
         }
 
-        public static bool IsEmpty<T>(this ICollection<T> collection)
-        {
-            return collection.Count == 0;
-        }
-
         public static ValueWraper<T> Wrap<T>(this T value)
         {
             return new ValueWraper<T>(value);
