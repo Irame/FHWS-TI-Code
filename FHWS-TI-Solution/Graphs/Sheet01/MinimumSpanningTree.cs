@@ -11,17 +11,25 @@ namespace Graphs
     {
         public Graph<TVertex> GetMinimalSpanningTreeWithKruskal()
         {
-            var result = new Graph<TVertex>();
-            foreach (var edge in Edges.OrderBy(edge => edge.Weight))
+            if (IsDirected)
             {
-                var temp = new Graph<TVertex>(result);
-                temp.AddEdge(edge);
-                if (!temp.IsCyclic())
-                {
-                    result = temp;
-                }
+                // Edmonds' algorithm
+                throw new NotImplementedException("GetMinimalSpanningTreeWithKruskal is not implemented for directed graphs.");
             }
-            return result;
+            else
+            {
+                var result = new Graph<TVertex>();
+                foreach (var edge in Edges.OrderBy(edge => edge.Weight))
+                {
+                    var temp = new Graph<TVertex>(result);
+                    temp.AddEdge(edge);
+                    if (!temp.IsCyclic())
+                    {
+                        result = temp;
+                    }
+                }
+                return result;
+            }
         }
     }
 }
