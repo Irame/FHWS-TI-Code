@@ -20,7 +20,8 @@ namespace Graphs
         private static Dictionary<string, ExerciseViewModelBase> _exerciseModelDict = new Dictionary<string, ExerciseViewModelBase>
         {
             {"Blatt 1, Aufgabe 2", new Sheet01Exercise02ViewModel()},
-            {"Blatt 1, Aufgabe 3", new Sheet01Exercise03ViewModel()}
+            {"Blatt 1, Aufgabe 3", new Sheet01Exercise03ViewModel()},
+            {"Blatt 1, Aufgabe 4", new Sheet01Exercise04ViewModel()},
         };
 
         public List<string> ExerciseNames { get; } = _exerciseModelDict.Keys.ToList();
