@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using FibonacciHeap;
 
 namespace Graphs.Utils
 {
@@ -71,6 +72,14 @@ namespace Graphs.Utils
                     Task.Delay(msDelay).Wait();
                 }
             });
+        }
+
+        public static void InsertRange<T>(this FibonacciHeap<T> heap, IEnumerable<FibonacciHeapNode<T>> enumerable)
+        {
+            foreach (var item in enumerable)
+            {
+                heap.Insert(item);
+            }
         }
     }
 }
