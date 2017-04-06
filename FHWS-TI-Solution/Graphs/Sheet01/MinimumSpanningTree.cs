@@ -21,11 +21,14 @@ namespace Graphs
                 var result = new Graph<TVertex>();
                 foreach (var edge in Edges.OrderBy(edge => edge.Weight))
                 {
-                    var temp = new Graph<TVertex>(result);
-                    temp.AddEdge(edge);
-                    if (!temp.IsCyclic())
+                    result.AddEdge(edge);
+                    if (result.IsCyclic())
                     {
-                        result = temp;
+                        result.RemoveEdge(edge);
+                        if (result.GetDegree(edge.Source) == 0)
+                            result.RemoveVertex(edge.Source);
+                        if (result.GetDegree(edge.Target) == 0)
+                            result.RemoveVertex(edge.Target);
                     }
                 }
                 return result;
