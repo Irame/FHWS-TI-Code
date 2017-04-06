@@ -45,9 +45,31 @@ namespace Graphs
             IsDirected = isDirected ?? oldGraph.IsDirected;
         }
 
+        public Graph<TVertexNew> SelectVertecies<TVertexNew>(Func<TVertex, TVertexNew> vertexSelector)
+            where TVertexNew : VertexBase
+        {
+            var result = new Graph<TVertexNew>();
+            result.AddVertexRange(Vertices.Select(vertexSelector));
+            result.AddEdgeRange(_edgeList
+                .Select(edge => new EdgeBase<TVertexNew>(
+                    result.NameVertexDictionary[edge.Source.Name], 
+                    result.NameVertexDictionary[edge.Target.Name], 
+                    edge.Weight)));
+
+            return result;
+        }
+
         public void AddVertex(TVertex vertex)
         {
             _nameVertexDictionary[vertex.Name] = vertex;
+        }
+
+        public void AddVertexRange(IEnumerable<TVertex> vertices)
+        {
+            foreach (var vertex in vertices)
+            {
+                AddVertex(vertex);
+            }
         }
 
         public void AddEdge(EdgeBase<TVertex> edge)
@@ -65,6 +87,14 @@ namespace Graphs
                 _vertexEdgeDictionary.Add(edge.Target, edge);
 
             _edgeList.Add(edge);
+        }
+
+        public void AddEdgeRange(IEnumerable<EdgeBase<TVertex>> edges)
+        {
+            foreach (var edge in edges)
+            {
+                AddEdge(edge);
+            }
         }
 
         public void AddEdge(TVertex source, TVertex target)
