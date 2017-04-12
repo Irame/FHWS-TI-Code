@@ -15,18 +15,28 @@ namespace Graphs.ExerciseControls
         public string StartVertexName { get; set; }
         public string EndVertexName { get; set; }
 
-        public RelayCommand<double> RunFordFulkersonCommand { get; }
+        public RelayCommand RunFordFulkersonCommand { get; }
+
+        public double MaximumFlow
+        {
+            get => _maximumFlow;
+            private set { _maximumFlow = value; OnNotifyPropertyChanged(); }
+        }
+
+        private double _maximumFlow;
 
         public Sheet01Exercise04ViewModel()
         {
-            RunFordFulkersonCommand = new RelayCommand<double>(speed =>
+            MaximumFlow = 0;
+
+            RunFordFulkersonCommand = new RelayCommand(() =>
             {
                 if (_graph.NameVertexDictionary.TryGetValue(StartVertexName, out VertexBase startVertex) &&
                     _graph.NameVertexDictionary.TryGetValue(EndVertexName, out VertexBase endVertex))
                 {
-                    throw new NotImplementedException();
+                    MaximumFlow = _graph.GetGreatestFlowWithFordFulkerson(startVertex, endVertex);
                 }
-            }, d => _graph != null && StartVertexName != null && EndVertexName != null);
+            }, () => _graph != null && StartVertexName != null && EndVertexName != null);
         }
 
         protected override void OnGraphUpdated()

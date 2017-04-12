@@ -24,8 +24,7 @@
             <TextBlock Visibility="{Binding SelectedItem, ElementName=EndComboBox, Converter={utils:NullToVisibilityConverter Inverted=True}}"
                        IsHitTestVisible="False" Text="Please select ..." VerticalAlignment="Center" Margin="5,0,20,0"/>
         </Grid>
-        <Label Content="Animation speed:"/>
-        <Slider x:Name="AnimationSpeedSlider" Minimum="0" Maximum="1500" Value="500" IsDirectionReversed="True" />
-        <Button Content="Run Ford-Fulkerson" Margin="0,10,0,0" Command="{Binding RunFordFulkersonCommand}" CommandParameter="{Binding Value, ElementName=AnimationSpeedSlider}"/>
+        <Button Content="Run Ford-Fulkerson" Margin="0,30,0,0" Command="{Binding RunFordFulkersonCommand}"/>
+        <Label FontSize="14" Content="{Binding MaximumFlow}" ContentStringFormat="Max Flow: {0}"/>
     </StackPanel>
 </UserControl>
