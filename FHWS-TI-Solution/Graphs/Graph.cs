@@ -147,14 +147,23 @@ namespace Graphs
 
         public IEnumerable<EdgeBase<TVertex>> GetEdges(TVertex source, TVertex target)
         {
-            var edgeEnumerable = _vertexEdgeDictionary[source].AsEnumerable().Where(edge => edge.Source == source && edge.Target == target);
-            if (!IsDirected) edgeEnumerable = edgeEnumerable.Where(edge => edge.Target == source && edge.Source == target);
+            var edgeEnumerable = _vertexEdgeDictionary[source].AsEnumerable()
+                .Where(edge => edge.Source == source && edge.Target == target 
+                            || !IsDirected && edge.Source == target && edge.Target == source);
             return edgeEnumerable;
         }
 
         public EdgeBase<TVertex> GetEdge(TVertex source, TVertex target)
         {
             return GetEdges(source, target).FirstOrDefault();
+        }
+
+        public EdgeBase<TVertex> GetEdgeOrCreate(TVertex source, TVertex target, double weight = 0)
+        {
+            var edge = GetEdge(source, target);
+            if (edge == null)
+                AddEdge(edge = new EdgeBase<TVertex>(source, target, weight));
+            return edge;
         }
 
         public IEnumerable<(TVertex Vertex, EdgeBase<TVertex> Edge)> GetNeighborsWithEdges(TVertex vertex, bool ignoreSelfLoops = false)
@@ -308,17 +317,20 @@ namespace Graphs
             BackgroundBrush = DefaultBackgroundBrush;
         }
 
-        public bool IsInEdge(EdgeBase<VertexBase> edge)
+        public bool IsInEdge<TVertex>(EdgeBase<TVertex> edge)
+            where TVertex : VertexBase
         {
             return this == edge.Target;
         }
 
-        public bool IsOutEdge(EdgeBase<VertexBase> edge)
+        public bool IsOutEdge<TVertex>(EdgeBase<TVertex> edge)
+            where TVertex : VertexBase
         {
             return this == edge.Source;
         }
 
-        public VertexBase GetOtherVertex(EdgeBase<VertexBase> edge)
+        public TVertex GetOtherVertex<TVertex>(EdgeBase<TVertex> edge)
+            where TVertex: VertexBase
         {
             return this == edge.Source ? edge.Target : (this == edge.Target ? edge.Source : null);
         }
@@ -356,6 +368,11 @@ namespace Graphs
         public void ResetColor()
         {
             StrokeBrush = DefaultStrokeBrush;
+        }
+
+        public override string ToString()
+        {
+            return $"Edge{{Source={Source}, Target={Target}, Weight={Weight}}}";
         }
     }
 }
