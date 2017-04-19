@@ -17,17 +17,19 @@ namespace Graphs.ExerciseControls
 
         public RelayCommand RunFordFulkersonCommand { get; }
 
-        public double MaximumFlow
+        public double? MaximumFlow
         {
             get => _maximumFlow;
-            private set { _maximumFlow = value; OnNotifyPropertyChanged(); }
+            private set { _maximumFlow = value; OnNotifyPropertyChanged("MaximumFlowLabel"); }
         }
 
-        private double _maximumFlow;
+        public string MaximumFlowLabel => MaximumFlow?.ToString() ?? "?";
+
+        private double? _maximumFlow;
 
         public Sheet01Exercise04ViewModel()
         {
-            MaximumFlow = 0;
+            MaximumFlow = null;
 
             RunFordFulkersonCommand = new RelayCommand(() =>
             {
@@ -42,6 +44,7 @@ namespace Graphs.ExerciseControls
         protected override void OnGraphUpdated()
         {
             OnNotifyPropertyChanged(nameof(VertexNames));
+            MaximumFlow = null;
         }
 
     }

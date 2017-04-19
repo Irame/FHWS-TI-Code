@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,9 @@ namespace Graphs
 {
     partial class Graph<TVertex>
     {
+        // complexity of O(Ef)
+        // E = number of edges (BFS part)
+        // f = maximum flow (main loop)
         public double GetGreatestFlowWithFordFulkerson(TVertex source, TVertex sink)
         {
             var workingGraph = UglyPreperation();
@@ -41,6 +45,7 @@ namespace Graphs
 
             return maxFlow;
 
+            // terminates if it finds the target
             bool CheckForPathWithBfs(Graph<TVertex> graph, TVertex start, TVertex end, out Dictionary<TVertex, EdgeBase<TVertex>> edgesToParent)
             {
                 edgesToParent = new Dictionary<TVertex, EdgeBase<TVertex>>();
@@ -50,21 +55,23 @@ namespace Graphs
                 while (!queue.IsEmpty())
                 {
                     var curVertexAndEdge = queue.Dequeue();
-                    if ((curVertexAndEdge.Edge?.Weight ?? 1) <= 0)
+                    if ((curVertexAndEdge.Edge?.Weight ?? 1) <= 0 || visited.Contains(curVertexAndEdge.Vertex))
                         continue;
 
                     visited.Add(curVertexAndEdge.Vertex);
                     edgesToParent[curVertexAndEdge.Vertex] = curVertexAndEdge.Edge;
 
+                    if (curVertexAndEdge.Vertex == end)
+                        return true;
+
                     queue.EnqueueRange(graph
                         .GetNeighborsWithEdges(curVertexAndEdge.Vertex)
-                        .Distinct()
-                        .Where(tuple => !visited.Contains(tuple.Vertex)));
+                        .Distinct());
                 }
-                return visited.Contains(end);
+                return false;
             }
 
-            // this is done to make sure we have a graph with only one connection between every vertex
+            // this is done to make sure we have a graph with only one connection between every vertex and no self loops
             Graph<TVertex> UglyPreperation()
             {
                 var edges = Edges
@@ -73,7 +80,7 @@ namespace Graphs
                         .GroupBy(edge => edge.Target)
                         .Select(targetGrouping => new EdgeBase<TVertex>(sourceGrouping.Key, targetGrouping.Key, targetGrouping.Sum(edge => edge.Weight))))
                     .GroupBy(edge =>
-                        edge.Source.Name.CompareTo(edge.Target.Name) < 0
+                        CultureInfo.CurrentCulture.CompareInfo.Compare(edge.Source.Name, edge.Target.Name) < 0
                             ? (edge.Target, edge.Source)
                             : (edge.Source, edge.Target))
                     .Select(grouping => {
@@ -87,9 +94,10 @@ namespace Graphs
                                 ? new EdgeBase<TVertex>(grp[0].Source, grp[0].Target, wDiff)
                                 : new EdgeBase<TVertex>(grp[1].Source, grp[1].Target, -wDiff);
                         }
-                    });
+                    })
+                    .Where(edge => edge.Source != edge.Target);
 
-                var result = new Graph<TVertex>(IsDirected);
+                var result = new Graph<TVertex>(true);
                 result.AddVertexRange(Vertices);
                 result.AddEdgeRange(edges);
                 return result;

@@ -25,6 +25,6 @@
                        IsHitTestVisible="False" Text="Please select ..." VerticalAlignment="Center" Margin="5,0,20,0"/>
         </Grid>
         <Button Content="Run Ford-Fulkerson" Margin="0,30,0,0" Command="{Binding RunFordFulkersonCommand}"/>
-        <Label FontSize="14" Content="{Binding MaximumFlow}" ContentStringFormat="Max Flow: {0}"/>
+        <Label FontSize="14" Content="{Binding MaximumFlowLabel}" ContentStringFormat="Max Flow: {0}"/>
     </StackPanel>
 </UserControl>
