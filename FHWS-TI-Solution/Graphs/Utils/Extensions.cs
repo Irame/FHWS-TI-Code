@@ -81,5 +81,11 @@ namespace Graphs.Utils
                 heap.Insert(item);
             }
         }
+
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable)
+        {
+            var rnd = new Random();
+            return enumerable.OrderBy(item => rnd.Next());
+        } 
     }
 }

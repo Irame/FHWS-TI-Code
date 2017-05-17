@@ -186,6 +186,11 @@ namespace Graphs
         {
             return GetNeighborsWithEdges(vertex, ignoreSelfLoops).Select(vertexEdgeTuple => vertexEdgeTuple.Vertex);
         }
+        
+        public int GetMaxDegree()
+        {
+            return _vertexEdgeDictionary.Select(x => x.Value.Sum(edge => edge.Source == edge.Target ? 2 : 1)).Max();
+        }
 
         public int GetDegree(TVertex vertex)
         {
