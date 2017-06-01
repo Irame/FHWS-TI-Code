@@ -26,6 +26,9 @@
             <DataTemplate DataType="{x:Type exerciseControls:Chapter01ExerciseViewModel}">
                 <exerciseControls:Chapter01ExerciseView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type exerciseControls:Chapter03ExerciseViewModel}">
+                <exerciseControls:Chapter03ExerciseView />
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Window.DataContext>

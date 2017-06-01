@@ -90,6 +90,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Book\Chapter01.cs" />
+    <Compile Include="Book\Chapter03.cs" />
+    <Compile Include="ExerciseControls\Chapter03ExerciseViewModel.cs" />
+    <Compile Include="ExerciseControls\Chapter03ExerciseView.xaml.cs">
+      <DependentUpon>Chapter03ExerciseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExerciseControls\Chapter01ExerciseViewModel.cs" />
     <Compile Include="ExerciseControls\ExerciseViewModelBase.cs" />
     <Compile Include="ExerciseControls\Chapter01ExerciseView.xaml.cs">
@@ -125,6 +130,10 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\RelayCommands.cs" />
     <Compile Include="Graph.cs" />
+    <Page Include="ExerciseControls\Chapter03ExerciseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ExerciseControls\ExerciseControlsResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

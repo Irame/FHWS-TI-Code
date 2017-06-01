@@ -1,0 +1,26 @@
+# Knotendefinitionen
+knoten A
+knoten B
+knoten C
+knoten D
+knoten E
+knoten F
+
+# Kantendefinitionen 
+kante A B 4
+kante A C 5
+kante A D 3
+kante A E 4
+kante A F 2
+kante B C 3
+kante B D 3
+kante B E 3
+kante B F 5
+kante C D 5
+kante C E 6
+kante C F 3
+kante D E 3
+kante D F 2
+kante E F 4
+
+
